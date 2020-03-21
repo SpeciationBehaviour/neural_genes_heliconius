@@ -1,5 +1,5 @@
 ## Figure 1 & Supplementary Figure 1 - PLOTS ##
-Alexander E. Hausmann, March 2020
+Alexander E. Hausmann (alexander_hausmann@gmx.net), March 2020
 
 ## Initial Setup
 
