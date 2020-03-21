@@ -10,7 +10,7 @@ The repository includes:
 `ternary_final.csv`
 
 ### ii) A markdown file containing details for analyses of male courtship initiation data:
-`0_analyses_behavioral_data.html`
+`0_analyses_behavioral_data.md`
 
 ### iii) Scripts for analyses of NGS data
 
@@ -73,7 +73,7 @@ c) Conduct differential gene expression analyses between pure species using the 
 
 ### iv) Scripts or markdown files to generate figures
 
-`Figure1_and_supplfig1.html`
+`Figure1_and_supplfig1.md`
 
 `Figure2_differential_expression_all_stages_combined.R`
 
