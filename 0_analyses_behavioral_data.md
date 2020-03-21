@@ -83,7 +83,7 @@ We fit 2 models
 * Model 1: *cydno*, *melpomene*, F1s, backcross to *melpomene* & backcross to *cydno* males (irrespective of their genotype in backcross to *cydno*) (dataset `tern_pref_model`)
 * Model 2: backcross to *cydno* males with different genotypes on the chromosome 1 peak, different genotypes on the chromosome 17 peak and different genotypes on the chromosome 18 peak (dataset `tern_pref_model_cydBC`)
 
-Recode contrasts (necessary to retrieve predictors from categorical brm model). First, save old contrasts
+Recode contrasts (necessary to retrieve predictors from categorical `brm` model). First, save old contrasts
 ```{r}
 old_contr<-options("contrasts")
 options(contrasts = c("contr.sum", "contr.poly"))
@@ -194,7 +194,7 @@ What we can see from this output is:
 
 ## Retrieve conditional effects
 
-In all calls, we use `re_formula=NA` in order not to condition of the group-level effects.
+In all calls, we use `re_formula=NA` in order not to condition on the group-level effects.
 
 ### Model 1 (conditional effects)
 
