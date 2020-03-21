@@ -295,3 +295,5 @@ save(list=c("tern_pref",
             "estimator_table_2_geno18_with_geno1_homo",
             "estimator_table_2_geno18_with_geno1_hetero"), file="analyses_fig1_suppl_fig_1.RData")
 ```
+
+If you have further questions, please contact me under alexander_hausmann@gmx.net.
