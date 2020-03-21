@@ -1,5 +1,5 @@
 #Before counting RNA-reads that mapped to each gene model with HTseq, run Samtools to keep only "properly-mapped" pairs
-#Example, keep only "properly-mapped" pairs for mapping files of every melpomene adult sample (mapped to the melpomene genome)
+#Example, keep only "properly-mapped" pairs for mapping files of melpomene adults (mapped to the melpomene genome)
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/
 individuals=$(ls -d *)    
 for i in $individuals                 
@@ -12,16 +12,8 @@ for i in $individuals
 #-h include the header
 #-f 0x02 the read is mapped in a proper pair #in this way it filters out also #f 0x08 = if the mate is unmapped
 
-#other example #cydno adults files
-cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/
-individuals=$(ls -d *)    
-for i in $individuals                 
- do
-  cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/$i
-  (echo '#!/bin/bash'; echo '#SBATCH -J samtools'; echo '#SBATCH -n 1'; echo 'module load samtools/1.4.1'; echo "samtools view -h -f 0x02 Aligned.out.sam > Aligned.out.proper.sam") | sbatch
- done
-
-#F1 hybrids files
+#other example:
+#F1 hybrids 
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/F1toMP/
 individuals=$(ls -d *)    
 for i in $individuals                 
@@ -30,9 +22,8 @@ for i in $individuals
   (echo '#!/bin/bash'; echo '#SBATCH -J samtools'; echo '#SBATCH -n 1'; echo 'module load samtools/1.4.1'; echo "samtools view -h -f 0x02 Aligned.out.sam > Aligned.out.proper.sam") | sbatch
  done
 
-
 #Run HTseq on mapping files in ".sam" format
-#example for files of every melpomene adult
+#melpomene adults
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/
 individuals=$(ls -d *)    
 for i in $individuals                 
@@ -51,7 +42,6 @@ FILES=$(ls -t -v *.txt | tr '\n' ' ');
 awk 'NF > 1{ a[$1] = a[$1]"\t"$2} END {for( i in a ) print i a[i]}' $FILES > merged_htseq_MPtoMP_genecounts.txt
 
 #COPY FILES on laptop and format it: 
-
 #add header #for example for the file "merged_htseq_MPtoMP_genecounts.txt":
 #gene_id	MP45_A_m	MP47_A_m	MP53_A_f  MP70_A_m	MP71_A_m	MP78_A_f 	MP80_A_f 	MP83_A_m	MP100_A_m	MP104_A_m	MP128_A_f	MP218_A_f
 
