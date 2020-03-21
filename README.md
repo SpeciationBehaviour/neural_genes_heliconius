@@ -38,7 +38,7 @@ The repository includes:
 8. conduct differential gene expression analyses between pure species and hybrids with DESeq2 (gene counts estimated in 4_script_HTSeq):
 `8_Differential_expression.R`
 
-9. Use InterProScan and Panther to retrieve annotated functions associated with protein sequences of Hme2.5: 
+9. Use InterProScan and Panther to retrieve annotated functions associated with protein sequences of Hmel2.5: 
 `9_InterProScan/Panther.sh` 
 
 11. a) Infer BC3 hybrids genome composition, using variants inferred from RNA-seq data:
