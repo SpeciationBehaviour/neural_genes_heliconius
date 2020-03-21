@@ -1,23 +1,6 @@
----
-title: "Figure 1 & Supplementary Figure 1 - ANALYSES"
-author: "Alexander E. Hausmann"
-date: "last edited: `r format(Sys.time(), '%d %B %Y')`"
-output: 
-  rmdformats::readthedown:
-    number_sections: true
-    toc_depth: 2
-    df_print: paged
-extra_dependencies: ["xcolor","formatR"]
----
+## Figure 1 & Supplementary Figure 1 - ANALYSES 
+## Alex Hausman, MArch 2020
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-```{r, include=FALSE}
-library(knitr)
-library(rmdformats)
-opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
-```
 
 # Initial Setup
 
