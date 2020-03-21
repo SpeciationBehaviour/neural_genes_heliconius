@@ -6,13 +6,13 @@ This repository documents analyses for the manuscript "Neural processing genes a
 
 The repository includes :
 
-i) Raw data for behavioral analysis:
+### i) Raw data for behavioral analysis:
 `ternary_final.csv`
 
-ii) A markdown file containing details for analyses of male courtship initiation data:
+### ii) A markdown file containing details for analyses of male courtship initiation data:
 `0_analyses_behavioral_data.html`
 
-iii) Scripts for analyses of NGS data
+### iii) Scripts for analyses of NGS data
 
 1. Run a fast quality check on RNA-seq raw reads:
 `1_script_fastqc.sh`
@@ -71,7 +71,7 @@ c) Conduct differential gene expression analyses between pure species using the 
 16. Estimate variants fixed in H. melpomene and H. cydno from both RNAseq and genome resequencing data, and annotate variants effects with SNPeff:
 `16_protein_coding_variation_and_effects.sh`
 
-iv) Scripts or markdown files to generate figures
+### iv) Scripts or markdown files to generate figures
 
 `Figure1_and_supplfig1.html`
 
