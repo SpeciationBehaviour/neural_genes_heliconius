@@ -1,5 +1,5 @@
 ## Figure 1 & Supplementary Figure 1 - ANALYSES 
-## Alex Hausman, MArch 2020
+## Alex Hausman, March 2020
 
 
 # Initial Setup
