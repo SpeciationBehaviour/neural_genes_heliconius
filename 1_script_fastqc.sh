@@ -14,7 +14,6 @@ for i in $individuals   #loop for every file
 ## last echo use "" otherwise treats $i as “character”
 ## LEGEND FastQC:  -o = output directory, -f = format, *.sanfastq.gz (at the end) are the files to check with fastqc 
 
-
 #other example
 #For cydno individuals sampled at 156h APF 
 cd /data/home/wolfproj/wolfproj-06/GenePool_RNAseq_brain_data_July2014_Raw_reads/156h_APF/CP
