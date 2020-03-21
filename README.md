@@ -4,7 +4,7 @@ Matteo Rossi, Timothy J. Thurman, Alexander E. Hausmann, Stephen H. Montgomery, 
 
 This repository documents analyses for the manuscript "Neural processing genes are linked to divergence in visual mate preference in sympatric Heliconius butterflies". These bespoke scripts, written for either Unix or R, are presented for transparency only and will require editing to be applied to other datasets. 
 
-The repository includes :
+The repository includes:
 
 ### i) Raw data for behavioral analysis:
 `ternary_final.csv`
