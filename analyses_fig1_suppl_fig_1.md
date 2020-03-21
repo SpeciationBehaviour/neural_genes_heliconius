@@ -89,7 +89,7 @@ old_contr<-options("contrasts")
 options(contrasts = c("contr.sum", "contr.poly"))
 ```
 
-Run the two models. Use insectary_id as random factor.
+Run the two models. Use `insectary_id` as random factor.
 
 ### Model 1
 
@@ -163,7 +163,7 @@ What we can see from this output is:
 * B) Dropping `geno18` makes the model worse (ELPD difference = 2.14 SE units). `geno18` is an important factor!
 * C) Dropping `geno1` makes the model worse (ELPD difference = 2.34 SE units). `geno1` is an important factor!
 
-We drop `geno17` and perform again approximate leave-one-out cross-validation on this model, testing the effect `geno1` and `geno18` in the reduced model (mod2_r_geno17).
+We drop `geno17` and perform again approximate leave-one-out cross-validation on this model, testing the effect `geno1` and `geno18` in the reduced model (`mod2_r_geno17`).
 
 Define models reduced by either `geno1` or `geno18`.
 
@@ -207,9 +207,9 @@ cond_eff_1<-conditional_effects(mod1,categorical=T)
 
 Retrieve conditional effects from model 2. We used the model reduced by `geno17` (`mod2_r_geno17`), since `geno17` turned out to be of little importance in the model.
 
-* We retrieve the conditional effects for genotype 18 (A vs. B) while keeping geno1 at the grand mean, by setting it to `NA` (therefore only extracting the effect of genotype at the chromosome 18 peak alone). These predictors will be used for figure 1. 
-* Second, we extract the predictors for genotype 18 when genotype 1 is homozygous. These predictors will be used for supplementary figure 1.
-* Last, we extract the predictors for genotype 18 when genotype 1 is heterozygous. These predictors will be used for supplementary figure 1.
+* We retrieve the conditional effects for genotype 18 (A vs. B) while keeping `geno1` at the grand mean, by setting it to `NA` (therefore only extracting the effect of genotype at the chromosome 18 peak alone). These predictors will be used for figure 1. 
+* Second, we extract the predictors for genotype at QTL on chromosome 18 when genotype at QTL on chromosome 1 is homozygous. These predictors will be used for supplementary figure 1.
+* Last, we extract the predictors for genotype at QTL on chromosome 18 when genotype at QTL on chromosome 1 is heterozygous. These predictors will be used for supplementary figure 1.
 ```{r}
 cond_eff_2_geno18<-conditional_effects(mod2_r_geno17,  effects = "geno18", re_formula = NA,categorical=T,
                                        conditions = data.frame(geno1 = NA))
@@ -231,7 +231,7 @@ options(contrasts = old_contr$contrasts)
 
 ### Model 1 (predictor tables)
 
-For model 1, we want a list with 5 table entries. Table 1 is for *cydno*, table 2 for *melpomene*, table 3 for F1s, table 4 for *cydno* backcross (actually not used for later graphs), table 5 for *melpomene* backcross .
+For model 1, we want a list with 5 table entries. Table 1 is for *cydno*, table 2 for *melpomene*, table 3 for F1s, table 4 for *cydno* backcross (actually not used for later graphs), table 5 for *melpomene* backcross.
 
 Each table has three rows and three columns. The columns show predictor, lower 2.5% threshold of posterior, upper 97.5% threshold of posterior.
 ```{r}
