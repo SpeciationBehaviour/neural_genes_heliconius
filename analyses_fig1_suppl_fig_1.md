@@ -1,8 +1,7 @@
-## Figure 1 & Supplementary Figure 1 - ANALYSES 
-## Alex Hausman, March 2020
+## Figure 1 & Supplementary Figure 1 - ANALYSES  ##
+Alexander E. Hausmann, March 2020
 
-
-# Initial Setup
+### Initial Setup
 
 Set working directory
 ```{r}
@@ -20,7 +19,7 @@ tern_pref<-read.csv("ternary_final.csv",header=T,
                       stringsAsFactors = F)
 ```
 
-# Data Handling
+### Data Handling
 
 Calculate number of trials with response
 ```{r}
@@ -77,7 +76,7 @@ tern_pref_cydBC<-droplevels(tern_pref_cydBC)
 ```
 
 
-# Statistical modelling
+### Statistical modelling
 
 We fit 2 models
 
@@ -100,16 +99,16 @@ mod1 <- suppressMessages(brm(decision ~ Type + (1|insectary_id), data = tern_pre
                              family="categorical",chains=5, iter=6000, warmup=3000, refresh=0,silent = TRUE,seed=42))
 ```
 
-## Model 2
+### Model 2
 ```{r}
 mod2 <- suppressMessages(brm(decision ~ geno1 + geno17 + geno18 + (1|insectary_id), data = tern_pref_model_cydBC, 
                              family="categorical",chains=5, iter=6000, warmup=3000, refresh=0,silent = TRUE,seed=43))
 ```
 
 
-# Approximate leave-one-out cross-validation (LOO) for fixed effects of models
+### Approximate leave-one-out cross-validation (LOO) for fixed effects of models
 
-## Model 1 (LOO)
+### Model 1 (LOO)
 
 Check importance of `Type`{.R} as fixed effect in `mod1`{.R}. Define reduced model (drop `Type`{.R}).
 ```{r}
@@ -133,7 +132,7 @@ As a rule of thumb, dividing the difference in ELPD by its standard error (SE) c
 What we can see from this output is:
 Dropping `Type`{.R} leads to a big difference in units of standard error (ELPD difference = 7.72SE units). `Type`{.R} seems therefore a highly important factor!
 
-## Model 2 (LOO)
+### Model 2 (LOO)
 
 Check importance of the different fixed effects in `mod2`{.R}. Define reduced models (drop always one of the fixed effects)
 ```{r}
@@ -193,18 +192,18 @@ What we can see from this output is:
 * B) Dropping `geno1`{.R} leads to a slightly bigger ELPD and SE as before (ELPD diff = 2.38 SE units). `geno1`{.R} is an important factor!
 
 
-# Retrieve conditional effects
+### Retrieve conditional effects
 
 In all calls, we use `re_formula=NA`{.R} in order not to condition of the group-level effects.
 
-## Model 1 (conditional effects)
+### Model 1 (conditional effects)
 
 Retrieve conditional effects from model 1.
 ```{r}
 cond_eff_1<-conditional_effects(mod1,categorical=T)
 ```
 
-## Model 2 (conditional effects)
+### Model 2 (conditional effects)
 
 Retrieve conditional effects from model 2. We used the model reduced by `geno17`{.R} (`mod2_r_geno17`{.R}), since `geno17`{.R} turned out to be of little importance in the model.
 
@@ -228,9 +227,9 @@ options(contrasts = old_contr$contrasts)
 ```
 
 
-# Produce predictor tables for later plots
+### Produce predictor tables for later plots
 
-## Model 1 (predictor tables)
+### Model 1 (predictor tables)
 
 For model 1, we want a list with 5 table entries. Table 1 is for *cydno*, table 2 for *melpomene*, table 3 for F1s, table 4 for *cydno* backcross (actually not used for later graphs), table 5 for *melpomene* backcross .
 
@@ -254,7 +253,7 @@ estimator_table_1[[5]]<-temp_t[c((1:3)[temp_t$effect2__=="cyd_only"],(1:3)[temp_
                                  (1:3)[temp_t$effect2__=="both"]),2:4]
 ```
 
-## Model 2 (predictor tables)
+### Model 2 (predictor tables)
 
 For model 2, we want three lists, each with 2 table entries. The first list is for `geno18`{.R}, the second list is for `geno18`{.R} when `geno1`{.R} is homozygous, the third list is for `geno18`{.R} when `geno1`{.R} is heterozygous.
 
@@ -285,8 +284,7 @@ estimator_table_2_geno18_with_geno1_hetero[[2]]<-temp_t[c((1:3)[temp_t$effect2__
                                                         (1:3)[temp_t$effect2__=="both"]),2:4]
 ```
 
-
-# Save produced tables/lists
+### Save produced tables/lists
 
 Save relevant tables for plotting Markdown
 ```{r}
@@ -299,7 +297,7 @@ save(list=c("tern_pref",
 ```
 
 
-# Session Info
+### Session Info
 
 ```{r}
 sessionInfo()
