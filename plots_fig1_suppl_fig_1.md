@@ -1,14 +1,14 @@
 ## Figure 1 & Supplementary Figure 1 - PLOTS ##
 Alexander E. Hausmann, March 2020
 
-### Initial Setup
+## Initial Setup
 
 Setting a seed (basically only relevant for reproducing specific jitter pattern in the plots).
 ```{r}
 set.seed(42)
 ```
 
-Set working directory
+Set working directory (change to respective device)
 ```{r}
 setwd("C:/Users/Hausmann/Desktop/Rossi_et_al_2020/")
 ```
@@ -34,11 +34,11 @@ cydno<-readPNG("cydno.png")
 melpomene<-readPNG("melpomene.png")
 ```
 
-### Define function for ternary plots
+## Define function for ternary plots
 
-In the following, the function `ternary_choice`{.R} will be defined, which later will be called multiple times to produce the plots.
+In the following, the function `ternary_choice` will be defined, which later will be called multiple times to produce the plots.
 
-First, some subfunctions will be defined which later will be called within `ternary_choice`{.R}.
+First, some subfunctions will be defined which later will be called within `ternary_choice`.
 
 The left (skewed) ternary axis will be further referred to as x1, the bottom one as x2 and the right (skewed) one as x3. All functions or variables relating to one of these axes will carry the respective abbreviation in their name.
 
@@ -556,7 +556,7 @@ ternary_choice<-function(
 ```
 
 
-### Figure 1 
+## Figure 1 
 
 6 Plots in one layout: 
 
@@ -564,10 +564,10 @@ ternary_choice<-function(
 * *cydno* males
 * F1 males
 * *melpomene* males
-* backcross to *cydno* males by genotype on chromosome 18
+* backcross to *cydno* males by genotype on chromosome 18 QTL
 * backcross to *melpomene* males
 
-Since we'll save this to a png, the code cannot be broken into chunks. Check comments within plot chunk.
+We'll save this plot directly to a png. Check comments within the code chunk.
 
 ```{r}
 png("Figure1.png",height=3000,width=3600,res=300)
@@ -590,11 +590,11 @@ par(xpd=FALSE)
 
 # Plot explanatory graph
 ternary_choice(
-output_file="",
-data_fr=c(),
+  output_file="",
+  data_fr=c(),
   est_coord=c(),
   cont_yn=F,
-ticks_inner_outer="outer",
+  ticks_inner_outer="outer",
   spaco2=0.07,
   disto=0.1,
   half_length_arrow=0.3,
@@ -646,29 +646,29 @@ plot(1,1,type="n",bty="n",xaxt="n",yaxt="n",xlab="",ylab="")
 
 # Plot cydno
 ternary_choice(
-output_file="",
-data_fr=tern_pref[tern_pref$Type=="CP",c("prop_trials_cydno_court_only","prop_trials_melp_court_only","prop_trials_court_both")],
-dot_cols=rep("dodgerblue3",sum(tern_pref$Type=="CP")),
-dot_sizes=1.5*sqrt(tern_pref$total_trials_with_response[tern_pref$Type=="CP"]),
-transp=0.2,
-jitter_dots=3,
-est_coord=estimator_table_1[1],
-est_cols="dodgerblue3",
-est_line=T,
-cont_yn=F,
-remove_outer=F,
-ticks_inner_outer="outer",
-spaco2=0.07,
-disto=100,
-tick_length1=0.02,
-space_around=c(((1-((sqrt(3))/2)))+0.08,0.16,0.24,0.16),
-line_at=seq(0,1,0.1),
-tck_at=seq(0,1,0.1),
-axis_l=seq(0,1,0.1),
-axis_cex=1.2,
-axis_d1=0.04,
-title_names=c("","",""),
-scales_to_plot=2
+  output_file="",
+  data_fr=tern_pref[tern_pref$Type=="CP",c("prop_trials_cydno_court_only","prop_trials_melp_court_only","prop_trials_court_both")],
+  dot_cols=rep("dodgerblue3",sum(tern_pref$Type=="CP")),
+  dot_sizes=1.5*sqrt(tern_pref$total_trials_with_response[tern_pref$Type=="CP"]),
+  transp=0.2,
+  jitter_dots=3,
+  est_coord=estimator_table_1[1],
+  est_cols="dodgerblue3",
+  est_line=T,
+  cont_yn=F,
+  remove_outer=F,
+  ticks_inner_outer="outer",
+  spaco2=0.07,
+  disto=100,
+  tick_length1=0.02,
+  space_around=c(((1-((sqrt(3))/2)))+0.08,0.16,0.24,0.16),
+  line_at=seq(0,1,0.1),
+  tck_at=seq(0,1,0.1),
+  axis_l=seq(0,1,0.1),
+  axis_cex=1.2,
+  axis_d1=0.04,
+  title_names=c("","",""),
+  scales_to_plot=2
 )
 
 # Legend:
@@ -811,14 +811,13 @@ par(xpd=F)
 invisible(dev.off())
 ```
 
-
-Show png we just made
+Look at png we just made
 ```{r,fig.width=8.4, fig.height=7}
 fig1<-readPNG("Figure1.png")
 grid.raster(fig1)
 ```
 
-For completeness, we also show here the estimators for backcross-to-*cydno* males independent of their genotype:
+For completeness, we look at the estimators for backcross-to-*cydno* males independent of their genotype:
 
 ```{r}
 cyd_BC<-estimator_table_1[[4]]
@@ -826,15 +825,17 @@ row.names(cyd_BC)<-c("cyd_only","melp_only","both")
 print(cyd_BC)
 ```
 
-### Supplementary Figure 1
+## Supplementary Figure 1
 
 5 Plots in one layout: 
 
 * Blank explanatory plot
-* backcross to *cydno* males homozygous on chromosome 1 & 18 peak
-* backcross to *cydno* males homozygous on chromosome 1 & heterzygous on chromosome 18 peak
-* backcross to *cydno* males heterozygous on chromosome 1 & homozygous on chromosome 18 peak
-* backcross to *cydno* males heterozygous on chromosome 1 & 18 peak
+* backcross to *cydno* males homozygous on chromosome 1 & 18 QTL peak
+* backcross to *cydno* males homozygous on chromosome 1 & heterzygous on chromosome 18 QTL peak
+* backcross to *cydno* males heterozygous on chromosome 1 & homozygous on chromosome 18 QTL peak
+* backcross to *cydno* males heterozygous on chromosome 1 & 18 QTL peak
+
+Safe again as a png
 
 ```{r}
 # Resize png according to omi settings
@@ -860,7 +861,7 @@ ternary_choice(
   data_fr=c(),
   est_coord=c(),
   cont_yn=F,
-ticks_inner_outer="outer",
+  ticks_inner_outer="outer",
   spaco2=0.07,
   disto=0.1,
   half_length_arrow=0.3,
@@ -1040,15 +1041,8 @@ invisible(dev.off())
 par(xpd=old_xpd)
 ```
 
-Show png we just made
+Look at png we just made
 ```{r,fig.width=6, fig.height=7.4}
 suppl_fig1<-readPNG("Suppl_Figure1.png")
 grid.raster(suppl_fig1)
-```
-
-
-### Session Info
-
-```{r}
-sessionInfo()
 ```
