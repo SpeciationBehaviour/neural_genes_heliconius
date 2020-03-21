@@ -1,0 +1,168 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
+{\fonttbl\f0\fmodern\fcharset0 Courier-Bold;\f1\fmodern\fcharset0 Courier;\f2\froman\fcharset0 Times-Roman;
+}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red26\green26\blue26;\red255\green255\blue255;
+\red27\green31\blue34;\red217\green11\blue0;\red0\green0\blue0;\red64\green11\blue217;\red251\green2\blue7;
+\red127\green127\blue127;\red244\green246\blue249;\red83\green83\blue83;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\csgenericrgb\c14902\c14902\c14902;\csgenericrgb\c10196\c10196\c10196;\cssrgb\c100000\c100000\c100000;
+\csgenericrgb\c10588\c12157\c13333;\csgenericrgb\c85098\c4314\c0;\cssrgb\c0\c0\c0;\csgenericrgb\c25098\c4314\c85098;\cssrgb\c100000\c14913\c0;
+\cssrgb\c57046\c57047\c57046;\csgenericrgb\c95686\c96471\c97647;\csgenericrgb\c32549\c32549\c32549;\cssrgb\c100000\c100000\c100000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww27120\viewh11640\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+#ADULTS
+\fs36 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 #KEEP ONLY PROPER (MAPPED) PAIRS\
+#Mel to Mel
+\f1\b0 \cf2 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/MPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/MPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 samtools\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n \cf0 \kerning1\expnd0\expndtw0 1\cf3 \expnd0\expndtw0\kerning0
+'; echo '\cf0 module load \kerning1\expnd0\expndtw0 \CocoaLigature0 samtools/1.4.1\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf5 samtools view \cf2 -h -f 0x02 \cf5 Aligned.out.sam > Aligned.out.proper.sam\cf3 ") | sbatch\cf0 \
+\cf5  \cf3 done\
+\pard\pardeftab720\partightenfactor0
+\cf6 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf7 #COMMENTS
+\f1\b0 \cf6 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 #
+\f1\b0 -h include the header\cf6 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 #
+\f1\b0 -f 0x02 the read is mapped in a proper pair #in this way it filters out also -f 0x08 #if the mate is unmapped)\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 #Cydno to Mel
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf3 cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/CPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/CPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 samtools\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n \cf0 \kerning1\expnd0\expndtw0 1\cf3 \expnd0\expndtw0\kerning0
+'; echo '\cf0 module load \kerning1\expnd0\expndtw0 \CocoaLigature0 samtools/1.4.1\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf5 samtools view \cf2 -h -f 0x02 \cf5 Aligned.out.sam > Aligned.out.proper.sam\cf3 ") | sbatch\cf0 \
+\cf5  \cf3 done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf3 #F1 to Mel
+\f1\b0 \
+cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/\cf8 F1toMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/\cf8 F1toMP\cf0 /\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 samtools\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n \cf0 \kerning1\expnd0\expndtw0 1\cf3 \expnd0\expndtw0\kerning0
+'; echo '\cf0 module load \kerning1\expnd0\expndtw0 \CocoaLigature0 samtools/1.4.1\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf5 samtools view \cf2 -h -f 0x02 \cf5 Aligned.out.sam > Aligned.out.proper.sam\cf3 ") | sbatch\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf5  \cf3 done
+\f0\b \cf9 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \
+\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf0 #COUNT \cf10 (melpomene mapped to melpomene)
+\f1\b0\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf3 cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 3_\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 STAR/Adults/2ndPass/MPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/5_HTseq/Adults/MPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 HTSeq\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n \cf0 \kerning1\expnd0\expndtw0 1\cf3 \expnd0\expndtw0\kerning0
+'; echo '\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load htseq/0.9.1\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf0 htseq-count -r pos -a 20 -m union --stranded=no \cf2 -t gene \cf0 --idattr ID \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/\cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /Aligned.out.
+\f2\fs27\fsmilli13600 \cf5 \cb11 \expnd0\expndtw0\kerning0
+\CocoaLigature1 proper.
+\f1\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 sam\cf12 \expnd0\expndtw0\kerning0
+\CocoaLigature1  /\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 data/home/wolfproj/wolfproj-06/Genome_annotations/Hmel2.5.gff3\expnd0\expndtw0\kerning0
+\CocoaLigature1  > \cf3 $i\cf0 .propergenecounts.txt\cf3 ") | sbatch\cf5 \
+ \cf3 done\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 #NOTES
+\f1\b0 \
+-a mapping quality filtering of the alignment (>20) #AS (different from MAPq) >20\
+#--supplementary-alignments ignore (exclude chimeric)\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf3 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf7 \cb13 #Make table gene counts \cf10 (melpomene)
+\f1\b0\fs24 \cf7 \
+cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/5_HTseq/Adults/MPtoMP/\
+#remove slurm.out\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+FILES=$(ls -t -v *.txt | tr '\\n' ' ');\
+awk 'NF > 1\{ a[$1] = a[$1]"\\t"$2\} END \{for( i in a ) print i a[i]\}' $FILES > merged_htseq_MPtoMP_genecounts.txt\
+#FROM LAPTOP TERMINAL:\
+\kerning1\expnd0\expndtw0 \CocoaLigature0 #COPY FILES (this line is omitted in this script)\
+#header:\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+
+\f0\b #gene_id	\cb1 \kerning1\expnd0\expndtw0 MP45_A_m	MP47_A_m	MP53_A_f  MP70_A_m	MP71_A_m	MP78_A_f 	MP80_A_f 	MP83_A_m	MP100_A_m	MP104_A_m	MP128_A_f	MP218_A_f\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 #removed from file:\cf7 \cb13 \expnd0\expndtw0\kerning0
+	\cf0 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+\cf0 #\cf2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 __no_feature	3020314	1655011	2780154	2376162	2362679	1887295	1837890	2147028	3393217	3576709	3091746	3010553\cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+#__ambiguous	66906	24835	60686	67677	69527	89765	75985	48658	80402	79752	71152	94127 \
+#__too_low_aQual	0	0	0	0	0	0	0	0	0	0	0	0                                     \
+#\cf2 \expnd0\expndtw0\kerning0
+__not_aligned	0	0	0	0	0	0	0	0	0	0	0	0\cf0 \kerning1\expnd0\expndtw0 \
+#__alignment_not_unique	863129	350828	856688	689523	664363	707609	565544	567350	882234	878921	785625	973952\cf2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf6 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 #and so for all other species/hybrids}

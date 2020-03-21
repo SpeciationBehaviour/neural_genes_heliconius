@@ -1,0 +1,1894 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
+{\fonttbl\f0\fmodern\fcharset0 Courier-Bold;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red26\green26\blue26;\red255\green255\blue255;\red38\green38\blue38;
+\red0\green0\blue0;\red64\green11\blue217;\red17\green21\blue26;\red251\green2\blue7;\red255\green255\blue255;
+\red242\green242\blue242;\red38\green38\blue38;\red242\green242\blue242;\red127\green0\blue128;\red0\green0\blue255;
+\red251\green2\blue255;\red0\green0\blue0;\red34\green136\blue174;\red253\green128\blue8;\red184\green14\blue61;
+\red247\green238\blue241;\red64\green11\blue217;\red180\green36\blue25;\red102\green0\blue141;\red242\green239\blue236;
+\red255\green255\blue255;\red85\green142\blue40;\red62\green62\blue62;\red210\green50\blue85;\red148\green108\blue71;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c10196\c10196\c10196;\cssrgb\c100000\c100000\c100000;\csgenericrgb\c14902\c14902\c14902;
+\cssrgb\c0\c0\c0;\csgenericrgb\c25098\c4314\c85098;\cssrgb\c8235\c10980\c13333;\cssrgb\c100000\c14913\c0;\csgray\c100000;
+\cssrgb\c96078\c96078\c96078;\cssrgb\c20000\c20000\c20000;\csgenericrgb\c94902\c94902\c94902;\cssrgb\c57919\c12801\c57269;\cssrgb\c1680\c19835\c100000;
+\cssrgb\c100000\c25279\c100000;\csgray\c0;\cssrgb\c14902\c60392\c73725;\cssrgb\c100000\c57637\c0;\cssrgb\c78039\c14510\c30588;
+\cssrgb\c97647\c94902\c95686;\cssrgb\c32308\c18668\c88227;\cssrgb\c76409\c21698\c12524;\cssrgb\c48169\c12809\c62212;\cssrgb\c96078\c94902\c94118;
+\cssrgb\c100000\c100000\c100000\c49804;\cssrgb\c39975\c61335\c20601;\cssrgb\c31200\c30900\c30900;\cssrgb\c86667\c29020\c40784;\cssrgb\c65098\c49804\c34902;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh16580\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+#JOINTLY GENOTYPE \'93Pure SPECIES\'94 >>> to build database fixed MP and CP variants
+\fs24 \cf4 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #for joint genotyping need to run variant calling in different mode:\
+#https://gatkforums.broadinstitute.org/gatk/discussion/3893/calling-variants-on-cohorts-of-samples-using-the-haplotypecaller-in-gvcf-mode\
+#and the jointly genotype:\
+#https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_variantutils_GenotypeGVCFs.php\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf4 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs36 \cf4 ########156h
+\fs24 \
+#Variant Calling\
+#Melpomene
+\f1\b0\fs28 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /MP\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /MP\expnd0\expndtw0\kerning0
+\CocoaLigature1 /$i/\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T HaplotypeCaller -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  -I \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 split.bam -dontUseSoftClippedBases -stand_call_conf 20.0 \cf7 --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 \cf0 -o \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 output.g.vcf") | sbatch\
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf4 #Cydno\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /CP\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /CP\expnd0\expndtw0\kerning0
+\CocoaLigature1 /$i/\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T HaplotypeCaller -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  -I \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 split.bam -dontUseSoftClippedBases -stand_call_conf 20.0 \cf7 --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 \cf0 -o \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 156h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 output.g.vcf") | sbatch\
+ done
+\f0\b \cf4 \
+\pard\pardeftab720\partightenfactor0
+
+\fs36 \cf4 ########60h\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 #Melpomene
+\f1\b0\fs28 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /MP\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /MP\expnd0\expndtw0\kerning0
+\CocoaLigature1 /$i/\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T HaplotypeCaller -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  -I \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 split.bam -dontUseSoftClippedBases -stand_call_conf 20.0 \cf7 --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 \cf0 -o \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 output.g.vcf") | sbatch\
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf4 #Cydno\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /CP\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /CP\expnd0\expndtw0\kerning0
+\CocoaLigature1 /$i/\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T HaplotypeCaller -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  -I \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 split.bam -dontUseSoftClippedBases -stand_call_conf 20.0 \cf7 --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 \cf0 -o \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 60h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 output.g.vcf") | sbatch\
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs36 \cf5 ######ADULTS\cf8 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 #Melpomene
+\f1\b0\fs28 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /MP\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /MP\expnd0\expndtw0\kerning0
+\CocoaLigature1 /$i/\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T HaplotypeCaller -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  -I \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 split.bam -dontUseSoftClippedBases -stand_call_conf 20.0 \cf7 --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 \cf0 -o \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 output.g.vcf") | sbatch\
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf4 #Cydno
+\f1\b0\fs28 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /CP\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /CP\expnd0\expndtw0\kerning0
+\CocoaLigature1 /$i/\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T HaplotypeCaller -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  -I \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 split.bam -dontUseSoftClippedBases -stand_call_conf 20.0 \cf7 --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 \cf0 -o \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 Adults\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 output.g.vcf") | sbatch\
+ done
+\f0\b\fs36 \cf4 \
+\
+
+\f1\b0\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf8 \
+\pard\pardeftab720\partightenfactor0
+
+\fs28 \cf5 #CombineGVCFs all stages:
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_variantutils_CombineGVCFs.php
+\f0\b \
+\
+#MP\
+
+\f1\b0 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T CombineGVCFs -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 5\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 6\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 14\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 17\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 18\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 24\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 150\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 184\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 220\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 87\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 92\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 95\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 97\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 115\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 117\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 124\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 149\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 164\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 208\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 45\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 47\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 53\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 70\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 71A\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 78\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 80\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 83\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 100\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 104\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 128\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 218\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 -o 
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database
+\fs24 /MP/MP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 combined.\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf") | sbatch
+\f0\b \
+
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #CP
+\f1\b0 \
+(echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T CombineGVCFs -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 8\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 13\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 21\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 30\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 137\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 142\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 151\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 156\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 168\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 85\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 86\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 90\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 118\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 119\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 125\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 144\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 146\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 162\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 200\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 50\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 51\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 57\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 58\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 67\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 68\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 81\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 82\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 84\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 98\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 99\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf \expnd0\expndtw0\kerning0
+\CocoaLigature1 -o 
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database
+\fs24 /CP/CP_
+\f0\b new
+\f1\b0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 combined.\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf") | sbatch\kerning1\expnd0\expndtw0 \CocoaLigature0  \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\
+\
+
+\f0\b #removed one cydno individual #individual 4 
+\f1\b0 --variant \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 4\kerning1\expnd0\expndtw0 \CocoaLigature0 /output.g.vcf  
+\f0\b \expnd0\expndtw0\kerning0
+\CocoaLigature1 #to use as control (see later)
+\f1\b0 \
+\
+\
+\
+
+\f0\b\fs28 #Combined genotyping
+\f1\b0\fs24 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf5 #GENOTYPE all stages MP - 
+\f1\b0 \cb3 GenotypeGVCFs
+\f0\b \cb1  
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 \cb3 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T GenotypeGVCFs -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  --variant 
+\fs22 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database
+\fs24 \cb1 /\cb3 MP/\cb1 MP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 combined.\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 g.\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf\cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0  \expnd0\expndtw0\kerning0
+\CocoaLigature1 -o 
+\fs22 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database
+\fs24 \cb1 /\cb3 MP/MP_genotyped\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf") | sbatch
+\f0\b \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 \cb1 #it doesn\'92t include invariant sites\
+\
+
+\f0\b\fs28 #GENOTYPE all stages CP - 
+\f1\b0 \cb3 GenotypeGVCFs
+\f0\b\fs24 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 \cb3 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T GenotypeGVCFs -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  --variant 
+\fs22 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database
+\fs24 \cb1 /CP/CP_
+\f0\b new
+\f1\b0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 combined.\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 g.\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf\cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0  \expnd0\expndtw0\kerning0
+\CocoaLigature1 -o 
+\fs22 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database
+\fs24 \cb1 /\cb3 CP/CP_
+\f0\b \cb1 new
+\f1\b0 \cb3 genotyped\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf") | sbatch
+\f0\b \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb1 \
+
+\f1\b0  
+\f0\b \
+#if want to extract only SNPS (not indels)
+\fs20 \
+#MP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 \cb3 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cb10 SelectVariants\cb3  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  --variant \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database\cb1 /\cb3 MP/MP_genotyped\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf \cb10 -selectType SNP\cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0  \expnd0\expndtw0\kerning0
+\CocoaLigature1 -o \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database\cb1 /\cb3 MP/MP_geno_SNPsonly\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf") | sbatch\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #CP
+\f1\b0 \
+(echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cf11 \cb10 SelectVariants\cf5 \cb3  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  --variant \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database\cb1 /\cb3 CP/CP_genotyped\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf \cf11 \cb10 -selectType SNP\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0  \expnd0\expndtw0\kerning0
+\CocoaLigature1 -o \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database\cb1 /\cb3 CP/CP_geno_SNPsonly\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf") | sbatch
+\f0\b\fs24 \cf8 \cb1 \
+\
+\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs36 \cf5 #FILTERING
+\fs24 \
+#individuals filters: 
+\f1\b0 \cf4 \cb12 -filterName FS -filter \cf0 \cb1 '\cf4 \cb12 FS > 30.0\cf0 \cb1 '\cf4 \cb12  -filterName QD -filte\cf8 r \cf0 \cb1 '\cf4 \cb12 QD < 2.0\cf0 \cb1 '
+\f0\b \cf5 \
+#explanation parameters #https://gatkforums.broadinstitute.org/gatk/discussion/1268/what-is-a-vcf-and-how-should-i-interpret-it\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\pard\pardeftab720\partightenfactor0
+\cf13 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf13 #Melpomene
+\f1\b0 \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0  
+\f0\b\fs24 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 \cb1 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cf4 \cb12 VariantFiltration\cf0 \cb1  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  \cf4 \cb12 -V\cf0 \cb1  \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database\cb1 /\cb3 MP/\cf15 MP\cb1 _\cb3 genotyped\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf\cf4 \cb12  -filterName FS -filter \cf0 \cb1 '\cf4 \cb12 FS > 30.0\cf0 \cb1 '\cf4 \cb12  -filterName QD -filte\cf8 r \cf0 \cb1 '\cf4 \cb12 QD < 2.0\cf0 \cb1 ' \cf4 \cb12 -o \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 filtered_variants.vcf\cf0 \cb1 ") | sbatch\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 \
+\pard\pardeftab720\partightenfactor0
+\cf5 #leave only SNPs/indels that PASSed the filter = with excludeFiltered.\cf17  \cf8 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cf11 \cb10 SelectVariants\cf0 \cb1  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  \cf4 \cb12 -V\cf0 \cb1  \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 filtered_variants.vcf\cf0 \cb1  
+\f0\b \cf17 --
+\f1\b0 excludeFiltered  \cf4 \cb12 -o \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 passed_variants.vcf\cf0 \cb1 ") | sbatch\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf18 \
+\pard\pardeftab720\partightenfactor0
+\cf5 #now \'93filter\'94 GENOTYPE FIELDS #set to null ./. #where DP < 4
+\f1\b0 \cb3 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #vcf tools ####https://www.biostars.org/p/200527/
+\f1\b0 \
+(echo '#!/bin/bash'; echo '#SBATCH -J 
+\fs22 \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 vcftools
+\fs24 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1';
+\fs22 \cb1  echo 'module load \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 vcftools/0.1.14 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ';
+\fs24 \cb3  echo "
+\fs23\fsmilli11700 \cf19 \cb20 vcftools --vcf 
+\fs24 \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/\cf16 MP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 passed_variants.vcf
+\fs23\fsmilli11700 \cf19 \cb20  --out 
+\fs24 \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_geno_\cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf 
+\fs23\fsmilli11700 \cf19 \cb20 --minDP 4 --recode --recode-INFO-all
+\fs24 \cf5 \cb3 ") | sbatch\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #remove where all genotypes null
+\f1\b0 \cf5 \cb3 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb1 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cb10 SelectVariants\cb1  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb12 -V\cb1  \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_geno_variants.vcf.recode.vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  
+\f0\b --
+\f1\b0 excludeNonVariants \cb12 -o \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_\cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf\cb1 ") | sbatch\cb3 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf8 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf13 #Cydno 
+\f1\b0\fs24 \cf8 \cb3 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cf4 \cb12 VariantFiltration\cf0 \cb1  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  \cf4 \cb12 -V\cf0 \cb1  \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database\cb1 /\cb3 CP/CP_
+\f0\b \cf8 \cb1 new
+\f1\b0 \cf5 \cb3 genotyped\expnd0\expndtw0\kerning0
+\CocoaLigature1 .\kerning1\expnd0\expndtw0 \CocoaLigature0 g.\expnd0\expndtw0\kerning0
+\CocoaLigature1 vcf\cf4 \cb12  -filterName FS -filter \cf0 \cb1 '\cf4 \cb12 FS > 30.0\cf0 \cb1 '\cf4 \cb12  -filterName QD -filte\cf8 r \cf0 \cb1 '\cf4 \cb12 QD < 2.0\cf0 \cb1 ' \cf4 \cb12 -o \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 filtered_variants.vcf\cf0 \cb1 ") | sbatch\cf13 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #\cf8 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cf11 \cb10 SelectVariants\cf0 \cb1  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  \cf4 \cb12 -V\cf0 \cb1  \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 filtered_variants.vcf\cf0 \cb1  
+\f0\b \cf17 --
+\f1\b0 excludeFiltered \cf4 \cb12 -o \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 passed_variants.vcf\cf0 \cb1 ") | sbatch\
+#\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 (echo '#!/bin/bash'; echo '#SBATCH -J 
+\fs22 \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 vcftools
+\fs24 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1';
+\fs22 \cb1  echo 'module load \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 vcftools/0.1.14 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ';
+\fs24 \cb3  echo "
+\fs23\fsmilli11700 \cf19 \cb20 vcftools --vcf 
+\fs24 \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/\cf16 CP_\cf11 \cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 passed_variants.vcf
+\fs23\fsmilli11700 \cf19 \cb20  --out 
+\fs24 \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_geno_\cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf 
+\fs23\fsmilli11700 \cf19 \cb20 --minDP 4 --recode --recode-INFO-all
+\fs24 \cf5 \cb3 ") | sbatch\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf5 \cb1 #\
+
+\f1\b0\fs24 (echo '#!/bin/bash'; echo '#SBATCH -J \kerning1\expnd0\expndtw0 \CocoaLigature0 GATK\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo "java -jar \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\expnd0\expndtw0\kerning0
+\CocoaLigature1 GenomeAnalysisTK.jar -T \cb10 SelectVariants\cb1  -R \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb12 -V\cb1  \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_geno_variants.vcf.recode.vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  
+\f0\b --
+\f1\b0 excludeNonVariants \cb12 -o \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_\cb10 \expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf\cb1 ") | sbatch\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf14 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf8 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs36 \cf8 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 \cb3 ####################################################\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf5 #CREATE DATABASE SNPs/indels MP and SNPs CP
+\f1\b0\fs24 \
+
+\f0\b #bgzip and create index
+\f1\b0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+\cf5 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bcftools/1.4.1\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 bgzip \kerning1\expnd0\expndtw0 \CocoaLigature0 MP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf\kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\expnd0\expndtw0\kerning0
+\CocoaLigature1 bcftools index \kerning1\expnd0\expndtw0 \CocoaLigature0 MP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf.gz\kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 bgzip \kerning1\expnd0\expndtw0 \CocoaLigature0 CP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf\kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\expnd0\expndtw0\kerning0
+\CocoaLigature1 bcftools index \kerning1\expnd0\expndtw0 \CocoaLigature0 CP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf.gz\kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #create files with genotypes unique to MP and genotypes unique to CP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/MP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf.gz \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/CP_\expnd0\expndtw0\kerning0
+\CocoaLigature1 variants.vcf.gz -p \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/
+\f0\b MP_CP_variants_
+\f1\b0 hardfiltered/\expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\
+\pard\pardeftab720\partightenfactor0
+\cf5 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 #output files, first file (0000.vcf) contains variants that unique for the first file (MP). The second output (\kerning1\expnd0\expndtw0 \CocoaLigature0 0001.vcf)\expnd0\expndtw0\kerning0
+\CocoaLigature1  contains variants unique for the second input file (CP).
+\f1\b0  The third file contains variants intersected for both first and second input files (0002.vcf/ and 0003.vcf)\
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf5 bgzip \kerning1\expnd0\expndtw0 \CocoaLigature0 0000.vcf\
+\pard\pardeftab720\partightenfactor0
+\cf5 \CocoaLigature1 tabix -p vcf \CocoaLigature0 0000.vcf\CocoaLigature1 .gz #MP\
+\pard\pardeftab720\partightenfactor0
+\cf5 \expnd0\expndtw0\kerning0
+bgzip \kerning1\expnd0\expndtw0 \CocoaLigature0 0001.vcf\
+\pard\pardeftab720\partightenfactor0
+\cf5 \CocoaLigature1 tabix -p vcf \CocoaLigature0 0001.vcf\CocoaLigature1 .gz #CP\
+\pard\pardeftab720\partightenfactor0
+\cf5 \expnd0\expndtw0\kerning0
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs36 \cf5 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf5 ######## change coordinates from scaffolds to chromosomes
+\fs36 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 cp 
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/12_genomic_data/vcf_files/vcfChromTransfer.py /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/\
+
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 cp 
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/12_genomic_data/vcf_files/no_header_coordinates.txt /data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/\
+#flip around coordinates # from scaffold to chromosomes\
+
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 awk 'BEGIN \{FS="\\t"; OFS="\\t"\} \{print $4, $5, $6, $1, $2, $3, $7\}' 
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 no_header_coordinates.txt
+\fs24  > coordinates.txt\
+#change header\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+
+\fs22 \cf5 newChrom        newStart        newEnd  chrom   start   end     orientation\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+#\
+(echo '#!/bin/bash'; echo '#SBATCH -J 
+\f0\b \kerning1\expnd0\expndtw0 coordinates 
+\f1\b0 \expnd0\expndtw0\kerning0
+'; echo '#SBATCH -n 1'; echo "\kerning1\expnd0\expndtw0 \CocoaLigature0 python 
+\f0\b \CocoaLigature1 vcfChromTransfer.py 
+\f1\b0\fs22 \CocoaLigature0 -v 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/
+\f0\b 0000.vcf.gz
+\f1\b0  -t 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/coordinates.txt >> 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/
+\f0\b 0000.chr.vcf
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\
+\
+bgzip 
+\f0\b\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 0000.chr.vcf
+\f1\b0\fs24 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \CocoaLigature1 tabix -p vcf 
+\f0\b\fs22 \CocoaLigature0 0000.chr.vcf.gz\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+#\
+(echo '#!/bin/bash'; echo '#SBATCH -J 
+\f0\b \kerning1\expnd0\expndtw0 coordinates 
+\f1\b0 \expnd0\expndtw0\kerning0
+'; echo '#SBATCH -n 1'; echo "\kerning1\expnd0\expndtw0 \CocoaLigature0 python 
+\f0\b \CocoaLigature1 vcfChromTransfer.py 
+\f1\b0\fs22 \CocoaLigature0 -v 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/
+\f0\b 0001.vcf.gz
+\f1\b0  -t 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/coordinates.txt >> 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/
+\f0\b 0001.chr.vcf
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\
+\
+bgzip 
+\f0\b\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 0001.chr.vcf
+\f1\b0\fs24 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \CocoaLigature1 tabix -p vcf 
+\f0\b\fs22 \CocoaLigature0 0001.chr.vcf.gz\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #change coordinates also for hybrids vcfs
+\fs36 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 cp 
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/12_genomic_data/vcf_files/vcfChromTransfer.py 
+\fs24 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\
+#\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  (echo '#!/bin/bash'; echo '#SBATCH -J 
+\f0\b \kerning1\expnd0\expndtw0 coordinates 
+\f1\b0 \expnd0\expndtw0\kerning0
+'; echo '#SBATCH -n 1'; echo "\kerning1\expnd0\expndtw0 \CocoaLigature0 python 
+\f0\b \CocoaLigature1 vcfChromTransfer.py 
+\f1\b0\fs22 \CocoaLigature0 -v 
+\fs24 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.passed.output.vcf.gz
+\fs22 \kerning1\expnd0\expndtw0 \CocoaLigature0  -t 
+\f0\b /
+\f1\b0 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/coordinates.txt >> 
+\fs24 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.passed.chr.output.vcf") | sbatch\
+ done\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #do the same for \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/E27
+\f1\b0 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+#then remove \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/
+\fs22 vcfChromTransfer.py
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+
+\f0\b #bzip files\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  bgzip \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.passed.chr.output.vcf\
+ done
+\f0\b \
+
+\f1\b0 #\
+cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/E27\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  bgzip \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/E27/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.passed.chr.output.vcf\
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #then tabix
+\f1\b0 \
+cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  \kerning1\expnd0\expndtw0 tabix -p vcf\expnd0\expndtw0\kerning0
+ \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.passed.chr.output.vcf.gz\
+ done\
+#\
+cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/E27\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  \kerning1\expnd0\expndtw0 tabix -p vcf\expnd0\expndtw0\kerning0
+ \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/60h_APF/E27/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\kerning1\expnd0\expndtw0 \CocoaLigature0 /\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.passed.chr.output.vcf.gz\
+ done\
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb1 \
+\
+\
+###############################################\
+\pard\pardeftab720\partightenfactor0
+\cf14 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 #INTERSECT 156h hybrids vcf with CP and MP SNPs database   
+\f0\b \cf5 \cb1 \shad0 #156h \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 #create directory /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toCP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 #to CP
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \shad0 cd \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  mkdir \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered/
+\f0\b toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/\cf21 SNPs_database\cf5 /MP_CP_variants\cf21 _hardfiltered\cf5 /
+\f0\b\fs22 \cf22 0001.chr.vcf.gz
+\f1\b0\fs24 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz\cf5 \cb1  -p \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 ") | sbatch\cf0 \
+ done\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 #to MP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #create directory /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toMP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \shad0 cd \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  mkdir \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered/
+\f0\b toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/\cf21 SNPs_database\cf5 /MP_CP_variants\cf21 _hardfiltered\cf5 /
+\f0\b\fs22 \cf22 0000.chr.vcf.gz
+\f1\b0\fs24 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/156h_APF/E27/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.\cf23 chr.\cf5 output.vcf.gz\cb1  -p \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf14 #bgzip files 
+\f1\b0 #0003.vcf are intersects
+\f0\b \
+#to CP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bgzip \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003\cf5 .vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #to MP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bgzip \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156h_filtered\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003\cf5 .vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs24 \cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs36 \cf8 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs36 \cf5 \cb3 ###SNP density/coverage
+\fs28  \
+#FIRST DIVIDE genome in INTERVALS/-kb windows\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 #copied \kerning1\expnd0\expndtw0 \CocoaLigature0 Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa in /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+\cf5 #module load samtools/1.4.1\
+\pard\pardeftab720\partightenfactor0
+\cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 #samtools faidx \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\
+\expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 #cut -f 1,2 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa\expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 .fai > genome.sizes\kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+\cf5 3module load bedtools/2.26.0\
+\pard\pardeftab720\partightenfactor0
+\cf5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 #bedtools makewindows -g \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/\expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 genome.sizes -w 100000 > \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/\expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf5 \shad0 #chromosomal coordinates
+\f1\b0\fs24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+#nano new.genome.sizes\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
+
+\fs22 \cf5 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 chr1    17206585\
+chr2    9045316\
+chr3    10541528\
+chr4    9662098\
+chr5    9908586\
+chr6    14054175\
+chr7    14308859\
+chr8    9320449\
+chr9    8708747\
+chr10   17965481\
+chr11   11759272\
+chr12   16327298\
+chr13   18127314\
+chr14   9174305\
+chr15   10235750\
+chr16   10083215\
+chr17   14773299\
+chr18   16803890\
+chr19   16399344\
+chr20   14871695\
+chr21   13359691
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+bedtools makewindows -g \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 genome.sizes -w 100000 > \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed\
+\
+\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf5 \shad0 ####### Calculate SNPs density #\cb1 100kb windows #filtered variants
+\f1\b0\fs22 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #to CP
+\f1\b0 \
+cd \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toCP
+\f1\b0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toCP
+\f1\b0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bedtools\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo '\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bedtools/2.26.0\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 bedtools coverage -a \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed -b \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toCP
+\f1\b0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /0003.vcf.gz\cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  -counts \cb25 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 >\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toCP
+\f1\b0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CP_coverage.txt\cb1 \shad0 ") | sbatch\
+ done\
+
+\f0\b #to MP
+\f1\b0 \
+cd \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toMP
+\f1\b0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toMP
+\f1\b0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  (echo '#!/bin/bash'; echo '#SBATCH -J \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bedtools\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo '\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bedtools/2.26.0\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 bedtools coverage -a \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed -b \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toMP
+\f1\b0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /0003.vcf.gz\cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  -counts \cb25 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 >\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toMP
+\f1\b0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 M\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cb1 \shad0 ") | sbatch\
+ done\
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \kerning1\expnd0\expndtw0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 #change names before downloading\
+#CP coverage
+\f1\b0 \
+\pard\tx528\tx1056\tx1584\tx2112\tx2640\tx3168\tx3696\tx4224\tx4752\tx5280\tx5808\tx6337\tx6865\tx7393\tx7921\tx8449\tx8977\tx9505\tx10033\tx10561\tx11089\tx11617\tx12145\tx12674\tx13202\tx13730\tx14258\tx14786\tx15314\tx15842\tx16370\tx16898\tx17426\tx17954\tx18483\tx19011\tx19539\tx20067\tx20595\tx21123\tx21651\tx22179\tx22707\tx23235\tx23763\tx24291\tx24820\tx25348\tx25876\tx26404\tx26932\tx27460\tx27988\tx28516\tx29044\tx29572\tx30100\tx30628\tx31157\tx31685\tx32213\tx32741\tx33269\tx33797\pardeftab720\li80\fi-80\pardirnatural\partightenfactor0
+\cf5 cd \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toCP
+\f1\b0 /\cb1 \CocoaLigature1 \
+individuals=$(ls -d *)    \
+for i in $individuals                 \
+ do\
+  cd \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toCP
+\f1\b0 /\cb1 \CocoaLigature1 $i/\
+  mv \expnd0\expndtw0\kerning0
+C\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cb1 \kerning1\expnd0\expndtw0 \shad0  $i.\expnd0\expndtw0\kerning0
+C\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cb1 \kerning1\expnd0\expndtw0 \shad0     \
+ done\
+#MP coverage\
+cd \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toMP
+\f1\b0 /\cb1 \CocoaLigature1 \
+individuals=$(ls -d *)    \
+for i in $individuals                 \
+ do\
+  cd \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/156h_filtered/
+\f0\b toMP
+\f1\b0 /\cb1 \CocoaLigature1 $i/\
+  mv \expnd0\expndtw0\kerning0
+M\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cb1 \kerning1\expnd0\expndtw0 \shad0  $i.\expnd0\expndtw0\kerning0
+M\cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cb1 \kerning1\expnd0\expndtw0 \shad0     \
+ done\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 \expnd0\expndtw0\kerning0
+#download files
+\f1\b0 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+
+\f0\b \expnd0\expndtw0\kerning0
+\CocoaLigature1 #go to R script\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf11 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf14 \cb1 \shad0 ############# CONTROL WITH F1\cf26 \
+   \
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf14 # change coordinates\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 cp 
+\fs22 \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/12_genomic_data/vcf_files/vcfChromTransfer.py 
+\fs24 \cf0 \cb1 /data/home/wolfproj/wolfproj-06/7_GATK/\cf5 \cb3 Adults/F1/\
+#\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf5 \cb3 Adults/F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+\pard\pardeftab720\partightenfactor0
+\cf5   (echo '#!/bin/bash'; echo '#SBATCH -J 
+\f0\b \kerning1\expnd0\expndtw0 coordinates 
+\f1\b0 \expnd0\expndtw0\kerning0
+'; echo '#SBATCH -n 1'; echo "\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 python 
+\f0\b \cf0 \cb1 \CocoaLigature1 vcfChromTransfer.py 
+\f1\b0\fs22 \cf16 \cb9 \CocoaLigature0 -v 
+\fs24 \cf5 \cb3 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.output.vcf.gz
+\fs22 \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0  -t 
+\f0\b \cf21 /
+\f1\b0 \cf16 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/coordinates.txt >> 
+\fs24 \cf5 \cb3 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf\cf5 \cb1 ") | sbatch\cf0 \
+ done\cf5 \
+#then remove \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf5 \cb3 156h_APF/E27/
+\fs22 \cf16 \cb9 vcfChromTransfer.py\
+
+\fs24 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+
+\f0\b #bzip files\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf5 \cb3 Adults/F1\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+\pard\pardeftab720\partightenfactor0
+\cf5   bgzip \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf\cf0 \cb1 \
+ done\cf5 \
+
+\f0\b #then tabix
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf5 \cb3 Adults/F1\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+\pard\pardeftab720\partightenfactor0
+\cf5   \cf27 \kerning1\expnd0\expndtw0 tabix -p vcf\cf5 \expnd0\expndtw0\kerning0
+ \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/Adults/F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz\cf0 \cb1 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs22 \cf14 \
+\
+#F1\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 #to CP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #create directory /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \shad0 cd \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf21 \cb9 Adults\cf5 \cb3 /F1\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  mkdir \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/\cf21 SNPs_database\cf5 /
+\fs24 MP_CP_variants\cf21 _hardfiltered
+\fs22 \cf5 /
+\f0\b \cf22 0001.chr.vcf.gz
+\f1\b0 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf21 \cb9 Adults\cf5 \cb3 /F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /
+\fs24 \cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz
+\fs22 \cf5 \cb1  -p \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 ") | sbatch\cf0 \
+ done\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 #to MP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #create directory /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \shad0 cd \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf21 \cb9 Adults\cf5 \cb3 /F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  mkdir \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/\cf21 SNPs_database\cf5 /
+\fs24 MP_CP_variants\cf21 _hardfiltered
+\fs22 \cf5 /
+\f0\b \cf22 0000.chr.vcf.gz
+\f1\b0 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf21 \cb9 Adults\cf5 \cb3 /F1/\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /
+\fs24 \cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz
+\fs22 \cf5 \cb1  -p \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 ") | sbatch\cf0 \
+ done\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #bgzip files\
+#to CP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bgzip \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003\cf5 .vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #to MP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bgzip \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003\cf5 .vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\cf0 \
+ done\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #Calculate SNPs density #100kb windows
+\f1\b0 \
+
+\f0\b #to CP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bedtools\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo '\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bedtools/2.26.0\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf28 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 bedtools\cf11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  coverage -a \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed -b \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003.vcf.gz\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  -counts \cf29 \cb25 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 >\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toCP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CP_coverage.txt\cf5 \cb1 \shad0 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #to MP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bedtools\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo '\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bedtools/2.26.0\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf28 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 bedtools\cf11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  coverage -a \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed -b \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 \cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003.vcf.gz\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  -counts \cf29 \cb25 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 >\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toMP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 M\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf5 \cb1 \shad0 ") | sbatch\cf0 \
+ done\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf27 \kerning1\expnd0\expndtw0 #change names before downloading\
+#CP coverage
+\f1\b0 \
+\pard\tx528\tx1056\tx1584\tx2112\tx2640\tx3168\tx3696\tx4224\tx4752\tx5280\tx5808\tx6337\tx6865\tx7393\tx7921\tx8449\tx8977\tx9505\tx10033\tx10561\tx11089\tx11617\tx12145\tx12674\tx13202\tx13730\tx14258\tx14786\tx15314\tx15842\tx16370\tx16898\tx17426\tx17954\tx18483\tx19011\tx19539\tx20067\tx20595\tx21123\tx21651\tx22179\tx22707\tx23235\tx23763\tx24291\tx24820\tx25348\tx25876\tx26404\tx26932\tx27460\tx27988\tx28516\tx29044\tx29572\tx30100\tx30628\tx31157\tx31685\tx32213\tx32741\tx33269\tx33797\pardeftab720\li80\fi-80\pardirnatural\partightenfactor0
+\cf27 cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toCP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 \
+individuals=$(ls -d *)    \
+for i in $individuals                 \
+ do\
+  cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toCP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 $i/\
+  mv \cf0 \expnd0\expndtw0\kerning0
+C\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0  $i.\cf0 \expnd0\expndtw0\kerning0
+C\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0     \
+ done\
+#MP coverage\
+cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toMP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 \
+individuals=$(ls -d *)    \
+for i in $individuals                 \
+ do\
+  cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/
+\f0\b \cf21 F1_control_filtered
+\f1\b0 /
+\f0\b toMP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 $i/\
+  mv \cf0 \expnd0\expndtw0\kerning0
+M\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0  $i.\cf0 \expnd0\expndtw0\kerning0
+M\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0     \
+ done\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 \expnd0\expndtw0\kerning0
+#download files\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf11 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf14 \cb1 \shad0 ###############CONTROL WITH PURE CYDNO\cf26 \
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf14 # change coordinates\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf5 cp 
+\fs22 \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/12_genomic_data/vcf_files/vcfChromTransfer.py 
+\fs24 \cf0 \cb1 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 156h_APF\cf0 /CP/
+\fs24 \cf5 \cb3 \
+#\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 156h_APF\cf0 /CP/
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+\pard\pardeftab720\partightenfactor0
+\cf5   (echo '#!/bin/bash'; echo '#SBATCH -J 
+\f0\b \kerning1\expnd0\expndtw0 coordinates 
+\f1\b0 \expnd0\expndtw0\kerning0
+'; echo '#SBATCH -n 1'; echo "\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 python 
+\f0\b \cf0 \cb1 \CocoaLigature1 vcfChromTransfer.py 
+\f1\b0\fs22 \cf16 \cb9 \CocoaLigature0 -v 
+\fs24 \cf5 \cb3 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 \cb1 156h_APF\cf0 /CP
+\fs24 \cf5 \cb3 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.output.vcf.gz
+\fs22 \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0  -t 
+\f0\b \cf21 /
+\f1\b0 \cf16 data/home/wolfproj/wolfproj-06/10_introgression_line/SNPs_database/MP_CP_variants_hardfiltered/coordinates.txt >> 
+\fs24 \cf5 \cb3 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 \cb1 156h_APF\cf0 /CP
+\fs24 \cf5 \cb3 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf\cf5 \cb1 ") | sbatch\cf0 \
+ done\cf5 \
+#then remove \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 156h_APF\cf0 /CP/\cf16 \cb9 vcfChromTransfer.py\
+
+\fs24 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+
+\f0\b #bzip files\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 156h_APF\cf0 /CP
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+\pard\pardeftab720\partightenfactor0
+\cf5   bgzip \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 \cb1 156h_APF\cf0 /CP
+\fs24 \cf5 \cb3 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf\cf0 \cb1 \
+ done\cf5 \
+
+\f0\b #then tabix
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 156h_APF\cf0 /CP
+\fs24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+\pard\pardeftab720\partightenfactor0
+\cf5   \cf27 \kerning1\expnd0\expndtw0 tabix -p vcf\cf5 \expnd0\expndtw0\kerning0
+ \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/
+\fs22 \cf6 \cb1 156h_APF\cf0 /CP
+\fs24 \cf5 \cb3 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz\cf0 \cb1 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs28 \cf26 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs24 \cf11 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs22 \cf14 \cb1 \shad0 #156h CP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf14 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 #INTERSECT 
+\f0\b \cb1 \shad0 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 #to CP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #create directory /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \shad0 cd \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 \cb1 156h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  mkdir \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/\cf21 SNPs_database\cf5 /
+\fs24 MP_CP_variants\cf21 _hardfiltered
+\fs22 \cf5 /
+\f0\b \cf22 0001.chr.vcf.gz
+\f1\b0 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 \cb1 156h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /
+\fs24 \cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz
+\fs22 \cf5 \cb1  -p \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 #to MP\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf5 #create directory /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf14 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \shad0 cd \cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 \cb1 156h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  mkdir \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bcftools isec \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/\cf21 SNPs_database\cf5 /
+\fs24 MP_CP_variants\cf21 _hardfiltered
+\fs22 \cf5 /
+\f0\b \cf22 0000.chr.vcf.gz
+\f1\b0 \cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/7_GATK/\cf6 \cb1 156h_APF\cf0 /CP/\expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb3 \kerning1\expnd0\expndtw0 \CocoaLigature0 /
+\fs24 \cf23 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i.\cb12 passed.chr.output.vcf.gz
+\fs22 \cf5 \cb1  -p \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 ") | sbatch\cf0 \
+ done
+\f0\b \cf14  
+\f1\b0\fs24 \cf11 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf14 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 #bgzip\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 \cb1 \shad0 #to CP
+\f1\b0 \cf0 \
+cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bgzip \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003\cf5 .vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\cf0 \
+ done\
+
+\f0\b \cf14 #to MP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J bcftools'; echo '#SBATCH -n 1'; echo 'module load \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcftools/1.4.1\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "bgzip \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003\cf5 .vcf\cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ") | sbatch\cf0 \
+ done
+\fs24 \cf11 \cb3 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs22 \cf14 \cb1 \shad0 #Calculate SNPs density #100kb windows
+\f1\b0 \
+
+\f0\b #to CP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bedtools\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo '\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bedtools/2.26.0\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf28 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 bedtools\cf11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  coverage -a \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed -b \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003.vcf.gz\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  -counts \cf29 \cb25 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 >\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CP_coverage.txt\cf5 \cb1 \shad0 ") | sbatch\cf0 \
+ done\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf14 #to MP
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+individuals=$(\kerning1\expnd0\expndtw0 \CocoaLigature0 ls -d *\expnd0\expndtw0\kerning0
+\CocoaLigature1 )    \
+for i in $individuals                 \
+ do\
+  cd \cf5 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf5 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\
+  \cf5 (echo '#!/bin/bash'; echo '#SBATCH -J \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 bedtools\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo '#SBATCH -n 1'; echo '\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 module load bedtools/2.26.0\cf5 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 '; echo "\cf28 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 bedtools\cf11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  coverage -a \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/genome_windows/new.\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 windows.bed -b \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf22 0003.vcf.gz\cf11 \cb24 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  -counts \cf29 \cb25 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 >\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 \shad0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf16 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $i\cf16 \cb9 \kerning1\expnd0\expndtw0 \CocoaLigature0 /\cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 M\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf5 \cb1 \shad0 ") | sbatch\cf0 \
+ done\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf27 \kerning1\expnd0\expndtw0 #change names before downloading\
+#CP coverage
+\f1\b0 \
+\pard\tx528\tx1056\tx1584\tx2112\tx2640\tx3168\tx3696\tx4224\tx4752\tx5280\tx5808\tx6337\tx6865\tx7393\tx7921\tx8449\tx8977\tx9505\tx10033\tx10561\tx11089\tx11617\tx12145\tx12674\tx13202\tx13730\tx14258\tx14786\tx15314\tx15842\tx16370\tx16898\tx17426\tx17954\tx18483\tx19011\tx19539\tx20067\tx20595\tx21123\tx21651\tx22179\tx22707\tx23235\tx23763\tx24291\tx24820\tx25348\tx25876\tx26404\tx26932\tx27460\tx27988\tx28516\tx29044\tx29572\tx30100\tx30628\tx31157\tx31685\tx32213\tx32741\tx33269\tx33797\pardeftab720\li80\fi-80\pardirnatural\partightenfactor0
+\cf27 cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf27 \cb1 \CocoaLigature1 \
+individuals=$(ls -d *)    \
+for i in $individuals                 \
+ do\
+  cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toCP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 $i/\
+  mv \cf0 \expnd0\expndtw0\kerning0
+C\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0  $i.\cf0 \expnd0\expndtw0\kerning0
+C\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0     \
+ done\
+#MP coverage\
+cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 \
+individuals=$(ls -d *)    \
+for i in $individuals                 \
+ do\
+  cd \cf16 \cb9 \CocoaLigature0 /data/home/wolfproj/wolfproj-06/10_introgression_line/RESULTS/\cf21 156_purespecies_filtered_control\cf5 /
+\f0\b \cf21 toMP
+\f1\b0 \cf16 /\cf27 \cb1 \CocoaLigature1 $i/\
+  mv \cf0 \expnd0\expndtw0\kerning0
+M\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0  $i.\cf0 \expnd0\expndtw0\kerning0
+M\cf11 \cb24 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 P_coverage.txt\cf27 \cb1 \kerning1\expnd0\expndtw0 \shad0     \
+ done}
