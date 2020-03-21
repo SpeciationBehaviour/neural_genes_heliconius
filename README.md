@@ -17,10 +17,10 @@ The repository includes:
 1. Run a fast quality check on RNA-seq raw reads:
 `1_script_fastqc.sh`
 
-2. Trim adaptor and low quality bases with TrimGalore (wrapper script of Cutadapt:
+2. Trim adaptor and low quality bases with TrimGalore (wrapper script of Cutadapt):
 `2_script_trimgalore.sh`
 
-3. Map trimmed reads to the Heliconius melpomene (Hme2.5) or H. cydno genomes with STAR:
+3. Map trimmed reads to the Heliconius melpomene (Hmel2.5) or H. cydno genomes with STAR:
 `3_script_STAR.sh`
 
 4. Count for each sample the number of RNA reads mapping to each gene model: 
