@@ -73,7 +73,7 @@ c) Conduct differential gene expression analyses between pure species using the 
 
 ### iv) Scripts or markdown files to generate figures
 
-`Figure1_and_supplfig1.md`
+`Figure_1_and_supporting_figure_1.md`
 
 `Figure2_differential_expression_all_stages_combined.R`
 
