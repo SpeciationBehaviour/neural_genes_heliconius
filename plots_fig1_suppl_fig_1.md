@@ -1,26 +1,7 @@
----
-title: "Figure 1 & Supplementary Figure 1 - PLOTS"
-author: "Alexander E. Hausmann"
-date: "last edited: `r format(Sys.time(), '%d %B %Y')`"
-output: 
-  rmdformats::readthedown:
-    number_sections: true
-    toc_depth: 2
-    df_print: paged
-extra_dependencies: ["xcolor","formatR"]
----
+## Figure 1 & Supplementary Figure 1 - PLOTS ##
+Alexander E. Hausmann, March 2020
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-```{r, include=FALSE}
-library(knitr)
-library(rmdformats)
-opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
-```
-
-
-# Initial Setup
+### Initial Setup
 
 Setting a seed (basically only relevant for reproducing specific jitter pattern in the plots).
 ```{r}
@@ -53,7 +34,7 @@ cydno<-readPNG("cydno.png")
 melpomene<-readPNG("melpomene.png")
 ```
 
-# Define function for ternary plots
+### Define function for ternary plots
 
 In the following, the function `ternary_choice`{.R} will be defined, which later will be called multiple times to produce the plots.
 
@@ -61,7 +42,7 @@ First, some subfunctions will be defined which later will be called within `tern
 
 The left (skewed) ternary axis will be further referred to as x1, the bottom one as x2 and the right (skewed) one as x3. All functions or variables relating to one of these axes will carry the respective abbreviation in their name.
 
-## Subfunction definitions
+### Subfunction definitions
 
 Tick drawing functions
 
@@ -173,7 +154,7 @@ transf_y<-function(left,bottom,right){
 }
 ```
 
-## Main function definition
+### Main function definition
 
 ```{r}
 ternary_choice<-function(
@@ -575,7 +556,7 @@ ternary_choice<-function(
 ```
 
 
-# Figure 1 
+### Figure 1 
 
 6 Plots in one layout: 
 
@@ -845,7 +826,7 @@ row.names(cyd_BC)<-c("cyd_only","melp_only","both")
 print(cyd_BC)
 ```
 
-# Supplementary Figure 1
+### Supplementary Figure 1
 
 5 Plots in one layout: 
 
@@ -1066,7 +1047,7 @@ grid.raster(suppl_fig1)
 ```
 
 
-# Session Info
+### Session Info
 
 ```{r}
 sessionInfo()
