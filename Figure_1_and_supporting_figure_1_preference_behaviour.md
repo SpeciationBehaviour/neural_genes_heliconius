@@ -48,9 +48,7 @@ Tick drawing functions
 
 ```{r}
 tickx1<-function(xcoordo,ticks_inner_outer,tick_length,spaco2,...){
-  #calculate where diagonals cut throw edge line
   x1<-((sqrt(3)*(1-xcoordo)-2*spaco2)/(2*sqrt(3)))-0.5
-  #plug into one of the lines
   y1<-sqrt(3)*(x1+0.5)+2*spaco2
   x2<-((sqrt(3)*(1-xcoordo)-(2*(spaco2+tick_length*sin(60*(pi/180)))))/(2*sqrt(3)))-0.5
   y2<-sqrt(3)*(x2+0.5)+2*(spaco2+tick_length*sin(60*(pi/180)))
