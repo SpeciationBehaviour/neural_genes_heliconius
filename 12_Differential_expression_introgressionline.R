@@ -4,9 +4,9 @@ library(DESeq2)
 library(dplyr)
 annotation<-read.table("gene_info.txt",header=TRUE) 
 
-##### CONDUCT DIFFERENTIAL GENE EXPRESSION ANLYSES 
+##### CONDUCT DIFFERENTIAL GENE EXPRESSION ANALYSES 
 
-#between hybrids segregating at the QTL on chromosome 18
+#### between hybrids segregating at the QTL on chromosome 18
 
 #######BC3 hybrids at 156h APF
 #B locus introgressed #individuals number 108,116,126,155,183,185 #correspond to column #2,3,7,8,9,11
