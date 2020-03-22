@@ -1,26 +1,22 @@
-#needs sorted BAM #transform SAM files with Picard
-#Adults
-#Melpomene (to MP)
+#In order to use Picard and mark duplicate reads, first need to transform SAM files in sorted BAM files
+
+#example: melpomene adults 
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP
 individuals=$(ls -d *)    
 for i in $individuals                 
  do
   (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 1'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar SortSam I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/$i/Aligned.out.proper.sam O=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/$i/sorted.Aligned.out.bam SORT_ORDER=coordinate") | sbatch
  done
-#then remove slurm jobs from directory
-#Cydno (to MP)
+#example: cydno adults  
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP
 individuals=$(ls -d *)    
 for i in $individuals                 
  do
   (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 1'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar SortSam I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/$i/Aligned.out.proper.sam O=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/$i/sorted.Aligned.out.bam SORT_ORDER=coordinate") | sbatch
  done
-#then remove slurm jobs from directory
 
-
-##Add read group information 
-#instrument name:run id:flowcell id:lane
-
+##Now need to add read group information, can be found in file names 
+#Species sample# instrument name:run id:flowcell id:lane
 MP 45 HWI-D248:132:H8LHJADXX:2
 MP 47 HISEQ:192:H9C0LADXX:1           
 MP 53 HWI-D248:132:H8LHJADXX:2
@@ -34,7 +30,6 @@ MP 104 HWI-D248:133:H9FKKADXX:2
 MP 128 HISEQ:186:H9C50ADXX:1        
 MP 218 HWI-D248:138:H9A7JADXX:2
 
-
 CP 50 HWI-D248:132:H8LHJADXX:1
 CP 51 HWI-D248:132:H8LHJADXX:2
 CP 57 HWI-D248:132:H8LHJADXX:1
@@ -47,14 +42,13 @@ CP 84 HISEQ:190:H9A78ADXX:1
 CP 98 HWI-D248:133:H9FKKADXX:2
 CP 99 HWI-D248:133:H9FKKADXX:2
 
-
-
-#To add
+#To add with Picard the following information
 #RGID=id RGLB=library RGPL=illumina RGPU=machine RGSM=sample
-#RGID=flowcell id:lane id RGLB=every one it’s own! RGPL=illumina RGPU={FLOWCELL_BARCODE}.{LANE}.{SAMPLE_BARCODE} RGSM=SAMPLE
+#more datailed explanation:
+#RGID=flowcell id:lane id RGLB=putative individual label RGPL=illumina RGPU={FLOWCELL_BARCODE}.{LANE}.{SAMPLE_BARCODE} RGSM=SAMPLE#
 #Example #MP 45: RGID=H8LHJADXX:2 RGLB=MP45 RGPL=illumina RGPU=H8LHJADXX:2:45 RGSM=45
 
-
+#Now add read group information with Picard to every sample
 #45#
 (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 1'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar AddOrReplaceReadGroups I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/45/sorted.Aligned.out.bam O=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/45/rg_added_sorted.Aligned.out.bam RGID=H8LHJADXX:2 RGLB=MP45 RGPL=illumina RGPU=H8LHJADXX:2:45 RGSM=45") | sbatch 
 #47#
@@ -80,7 +74,6 @@ CP 99 HWI-D248:133:H9FKKADXX:2
 #218#
 (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 1'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar AddOrReplaceReadGroups I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/218/sorted.Aligned.out.bam O=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/218/rg_added_sorted.Aligned.out.bam RGID=H9A7JADXX:2 RGLB=MP218 RGPL=illumina RGPU=H9A7JADXX:2:218 RGSM=218") | sbatch
 
-
 #50#
 (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 1'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar AddOrReplaceReadGroups I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/50/sorted.Aligned.out.bam O=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/50/rg_added_sorted.Aligned.out.bam RGID=H8LHJADXX:1 RGLB=CP50 RGPL=illumina RGPU=H8LHJADXX:1:50 RGSM=50") | sbatch 
 #51#
@@ -104,7 +97,6 @@ CP 99 HWI-D248:133:H9FKKADXX:2
 #99#
 (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 1'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar AddOrReplaceReadGroups I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/99/sorted.Aligned.out.bam O=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/99/rg_added_sorted.Aligned.out.bam RGID=H9FKKADXX:2 RGLB=CP99 RGPL=illumina RGPU=H9FKKADXX:2:99 RGSM=99") | sbatch
 
-
 #########MARK DUPLICATES (and make indexes)   
 #Melpomene Adults    
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP
@@ -124,6 +116,5 @@ for i in $individuals
   mkdir ./$i/ 
   (echo '#!/bin/bash'; echo '#SBATCH -J Picard'; echo '#SBATCH -n 4'; echo "java -jar /data/home/wolfproj/wolfproj-06/4_Picard_mappingQC/picard.jar MarkDuplicates I=/data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/$i/rg_added_sorted.Aligned.out.bam O=/data/home/wolfproj/wolfproj-06/6_Picard_dedupl/Adults/CP/$i/dedupl.sorted.bam CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT M=/data/home/wolfproj/wolfproj-06/6_Picard_dedupl/Adults/CP/$i/output.metrics") | sbatch
  done
-
 
 #and so forth for the other samples
