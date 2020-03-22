@@ -1,17 +1,15 @@
 setwd("/Users/matteo/Desktop/")
 
-
 library(DESeq2)
 library(dplyr)
 annotation<-read.table("gene_info.txt",header=TRUE) 
 
+##### CONDUCT DIFFERENTIAL GENE EXPRESSION ANLYSES 
 
+#between hybrids segregating at the QTL on chromosome 18
 
-#####################################      DIFFERENTIAL EXPRESSION
-
-
+#######BC3 hybrids at 156h APF
 #B locus introgressed #individuals number 108,116,126,155,183,185 #correspond to column #2,3,7,8,9,11
-
 #Multi-factor design #sex as random factor  
 all156<-read.table("156h_toMP_genecounts.txt",header=TRUE, row.names = 1)
 all156<-all156[,c(0,20:35)]
@@ -39,9 +37,7 @@ only18_2<-all[all$scaffold == "Hmel218002o",] #
 only18_3<-all[all$scaffold =="Hmel218003o",] #
 onlylodscore<-only18_3[only18_3$end <2393341,] #
 
-
-
-########USING ONLY MALES
+#### USING ONLY MALES
 all156<-read.table("156h_toMP_genecounts.txt",header=TRUE, row.names = 1)
 all156<-all156[,c(0,20:35)]
 all156<-all156[,c(0,2,3,7,8,9,1,4,5,6,10)] #reorder
@@ -52,8 +48,8 @@ dds <- DESeqDataSetFromMatrix(countData=all156, colData=coldata3, design=~condit
 dds <- DESeq(dds) 
 res <- results(dds)
 resSig <- subset(res, padj < 0.05) 
-
 #write.table(resSig, file="156hintrogression_DE_males_toMP.txt", row.names = TRUE, quote=FALSE)  #add gene_id file first column
+
 diff156<-read.table("156hintrogression_DE_males_toMP.txt",header=TRUE)
 upmel<-diff156[diff156$log2FoldChange >1,] #
 upcydno<-diff156[diff156$log2FoldChange< (-1),] #
@@ -61,14 +57,8 @@ all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
 
 
-
-
-
-##############################     60h APF
-  
+#######BC3 hybrids at 60h APF
 #B locus introgressed: individuals # 152, 161, 179, 193, 197, 209, 215, 224   #columns 1,2,7,8,10,14,15,17
-
-
 #Multi-factor design #sex as random factor
 all60<-read.table("60h_toMP_genecounts.txt",header=TRUE, row.names = 1)
 all60<-all60[,c(0,21:37)]
@@ -90,14 +80,11 @@ upcydno<-diff60[diff60$log2FoldChange< (-1),] #
 all60<-rbind(upmel,upcydno)
 all60 <- merge(all60,annotation,by="gene_id")
 
-
 #Check at the level of the QTLs    
 #CHR18
 only18_2<-all60[all60$scaffold == "Hmel218002o",] 
 only18_3<-all60[all60$scaffold =="Hmel218003o",] #  
 onlylodscore<-only18_3[only18_3$end <2393341,] #
-
-
 
 ########ONLY MALES
 all60<-read.table("60h_toMP_genecounts.txt",header=TRUE, row.names = 1)
@@ -110,8 +97,8 @@ dds <- DESeqDataSetFromMatrix(countData=all60, colData=coldata, design=~conditio
 dds <- DESeq(dds)
 res <- results(dds)
 resSig <- subset(res, padj < 0.05) 
-
 #write.table(resSig, file="60hintrogression_DE_males_toMP.txt", row.names = TRUE, quote=FALSE)  #add gene_id file first column
+
 diff60<-read.table("60hintrogression_DE_males_toMP.txt",header=TRUE)
 upmel<-diff60[diff60$log2FoldChange >1,] #
 upcydno<-diff60[diff60$log2FoldChange< (-1),] #
@@ -120,19 +107,12 @@ all60 <- merge(all60,annotation,by="gene_id")
 
 
 
-
-
-
-
-#################### CLUSTERING BY OTHER CHROMOSOMES
+######  CHECK DIFFERENTIAL GENE EXPRESSION WHEN COMPARING BC3 HYBRIDS SEGREGATING AT OTHER CHROMOSOMES
 
 ################## CHR 4
-
-###156 h     
+###156 h  APF   
 #### chr 4 introgressed: 108, 116, 126, 136, 139, 154, 183, 185, 189
 #### chr 4 not introgressed: 105, 123, 131, 133, 140, 155, 166
-
-#Multi-factor desig
 all156<-read.table("156h_toMP_genecounts.txt",header=TRUE, row.names = 1)
 all156<-all156[,c(0,20:35)]
 all156<-all156[,c(0,2,3,6,8,9,10,11,13,14,1,4,5,7,12,15,16)] #reorder
@@ -150,7 +130,6 @@ upmel<-diff156[diff156$log2FoldChange >1,] #
 upcydno<-diff156[diff156$log2FoldChange< (-1),] #
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
-
 
 #### 60 h APF
 #### chr 4 introgressed: 152, 165, 179, 187, 188, 193, 197, 198, 199, 212, 214, 224
@@ -174,10 +153,7 @@ all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
 
 
-
-
-################## CHR 1
-
+###### CHR 1
 #### 156 h APF
 #### chr 1 introgressed: 105, 126, 136, 139, 140, 154, 155, 183, 185, 189
 #### chr 1 not introgressed: 108, 116, 123, 131, 133, 166
@@ -198,9 +174,6 @@ upmel<-diff156[diff156$log2FoldChange >1,] #
 upcydno<-diff156[diff156$log2FoldChange< (-1),] #
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
-
-
-
 
 #### 60 h APF
 #### chr 1 introgressed: 152, 161, 193, 198, 201, 212, 224
@@ -224,9 +197,7 @@ all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
 
 
-
-################## CHR 15
-
+#####  CHR 15
 ###156 h APF  
 #### chr 15 introgressed: 116, 123, 126, 131, 136, 154, 155, 183, 185, 189
 #### chr 15 not introgressed: 105, 108, 133, 139, 140, 166
@@ -247,8 +218,6 @@ upmel<-diff156[diff156$log2FoldChange >1,] #
 upcydno<-diff156[diff156$log2FoldChange< (-1),] #
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
-
-
 ###60 h APF     
 #### chr 15 introgressed: 161, 179, 192, 193, 197, 199, 209, 214
 #### chr 15 not introgressed: 152, 165, 187, 188, 198, 201, 212, 215, 224
@@ -271,9 +240,7 @@ all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
 
 
-
-################## CHR 20
-
+#### CHR 20
 ###156 h   APF  
 #### chr 20 introgressed: 105, 123, 131, 133, 140, 154, 166, 183, 189
 #### chr 20 not introgressed: 108, 116, 126, 136, 139, 155, 185
@@ -296,7 +263,6 @@ upcydno<-diff156[diff156$log2FoldChange< (-1),] #
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
 
-
 ###60 h APF
 #### chr 20 introgressed: 152, 161, 187, 188, 192, 193, 198, 209, 212, 214, 215, 224
 #### chr 20 not introgressed: 165, 179, 197, 199, 201
@@ -317,4 +283,3 @@ upmel<-diff156[diff156$log2FoldChange >1,] #
 upcydno<-diff156[diff156$log2FoldChange< (-1),] #
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
-
