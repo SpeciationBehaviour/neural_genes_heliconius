@@ -1,8 +1,9 @@
-##RABT (reference annotation based transcript, option -g #http://cole-trapnell-lab.github.io/cufflinks/cufflinks/
+#Reannotate genomes using RABT (reference annotation based transcript), option -g #http://cole-trapnell-lab.github.io/cufflinks/cufflinks/
 
 
-###### Adults
-#MP  
+## Reannotate genome using transcripts from Adults
+
+#Using melpomene RNA-reads
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/MPtoMP/
 individuals=$(ls -d *)    
 for i in $individuals                 
@@ -22,7 +23,7 @@ for i in $individuals
 #–min-frags-per-transfrag Assembled transfrags supported by fewer than this many aligned RNA-Seq fragments are not reported. (Default 10)
 #-F #lower bound proportion isoform abundance
 
-#CP 
+#Using cydno RNA-reads
 cd /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/
 individuals=$(ls -d *)    
 for i in $individuals                 
@@ -32,7 +33,9 @@ for i in $individuals
   (echo '#!/bin/bash'; echo '#SBATCH -J cufflinks'; echo '#SBATCH -n 1'; echo '#SBATCH -t 23:59:59'; echo 'module load cufflinks/2.1.1'; echo "cufflinks -g /data/home/wolfproj/wolfproj-06/Genome_annotations/Hmel2.5.gff3 /data/home/wolfproj/wolfproj-06/3_STAR/Adults/2ndPass/CPtoMP/$i/sorted.Aligned.out.bam -F 0.5 -I 20000 -A 0.4 –3-overhang-tolerance 5 –overlap-radius 5 –trim-3-dropoff-frac 0.3 –max-multiread-fraction 0.1 –min-frags-per-transfrag 50") | sbatch
  done
 
-##COMBINE MELPOMENE AND CYDNO SAMPLES
+# Combine annotations (gtf files) created individually into one single annotation
+
+#first prepare file with list of files to combine
 cd /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/combined_paramCufflink
 nano combined_listparamCufflink.txt
 /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/ADULTS_MP_paramCufflink/100/transcripts.gtf
@@ -59,10 +62,8 @@ nano combined_listparamCufflink.txt
 /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/ADULTS_CP_paramCufflink/98/transcripts.gtf
 /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/ADULTS_CP_paramCufflink/99/transcripts.gtf
 
-##########
+#Merge annotations
 cd /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/combined_paramCufflink
 (echo '#!/bin/bash'; echo '#SBATCH -J cuffmerge'; echo '#SBATCH -n 1'; echo '#SBATCH -t 23:59:59'; echo 'module load cufflinks/2.1.1'; echo "cuffmerge -g /data/home/wolfproj/wolfproj-06/Genome_annotations/Hmel2.5.gff3 -s /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa -o /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/combined_paramCufflink/combined_paramCufflink_stats combined_listparamCufflink.txt") | sbatch
 
-#copy file on laptop
-
-##########same for other stages…
+#do the same for the other stages
