@@ -1,6 +1,5 @@
 #Reannotate genomes using RABT (reference annotation based transcript), option -g #http://cole-trapnell-lab.github.io/cufflinks/cufflinks/
 
-
 ## Reannotate genome using transcripts from Adults
 
 #Using melpomene RNA-reads
@@ -66,4 +65,4 @@ nano combined_listparamCufflink.txt
 cd /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/combined_paramCufflink
 (echo '#!/bin/bash'; echo '#SBATCH -J cuffmerge'; echo '#SBATCH -n 1'; echo '#SBATCH -t 23:59:59'; echo 'module load cufflinks/2.1.1'; echo "cuffmerge -g /data/home/wolfproj/wolfproj-06/Genome_annotations/Hmel2.5.gff3 -s /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa -o /data/home/wolfproj/wolfproj-06/14_guided_transcr_annotation/CUfflinks/combined_paramCufflink/combined_paramCufflink_stats combined_listparamCufflink.txt") | sbatch
 
-#do the same for the other stages
+#do the same for the other stages #create a transcript based annotation, using cydno and melpomene files, separately for every stage (a lot of variation in isoforms usage across development)
