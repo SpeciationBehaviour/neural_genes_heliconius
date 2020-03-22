@@ -3,25 +3,21 @@ library("Gviz")
 library("DESeq2")
 options(ucscChromosomeNames=FALSE)
 
-
-#make genomic ranges
+#make genomic ranges #to mach gene physical position with fold change in gene expression value #Hmel2.5 genome assembly/annotation
 annotation<-read.table("gene_info.txt",header=TRUE) 
 annotation <- annotation[order(annotation$gene_id),]
 GR<-makeGRangesFromDataFrame(annotation, seqnames.field=c("scaffold"))
 a <- AnnotationTrack(GR, name = "gene ranges") 
-
-#
+#H. cydno genome assembly/annotation
 annotation_cyd<-read.table("gene_info_cydno.txt",header=TRUE)
 annotation_cyd <- annotation_cyd[order(annotation_cyd$gene_id),]
 GR2<-makeGRangesFromDataFrame(annotation_cyd, seqnames.field=c("scaffold"))
 a3 <- AnnotationTrack(GR2, name = "gene ranges") 
 
+### DIFFERENTIAL GENE EXPRESSION ANALYSES
+# ADULT STAGE
 
-
-
-#################################DIFFERENTIAL EXPRESSION
-
-########################Adults TO MELPOMENE
+#Mapping to melpomene
 allAdult<-read.table("Adults_toMP_gene_counts.txt",header=TRUE, row.names = 1)
 allAdult<-allAdult[,c(1:23)]  
 allAdult<- as.matrix(allAdult)
@@ -35,8 +31,7 @@ resGR <- results(dds, format = "GRanges")
 resGR$padj<--log10(resGR$padj) #transform p values adjusted in -log base10
 d <- DataTrack(resGR, data = "padj", type = "p", name = "-log10(padj)", strand = "*") #store p-values and genomic ranges in Gvizobject
 
-
-########################Adults TO CYDNO
+# Mapping to cydno
 allAdult2<-read.table("Adults_toCP_gene_counts.txt",header=TRUE, row.names = 1)
 allAdult2<-allAdult2[,c(1:23)]  
 allAdult2<- as.matrix(allAdult2)
@@ -49,10 +44,6 @@ dds2 <- DESeq(ddsSex2)
 resGR3 <- results(dds2, format = "GRanges")
 resGR3$padj<--log10(resGR3$padj) #transform p values adjusted in -log base10
 d3 <- DataTrack(resGR3, data = "padj", type = "p", name = "-log10(padj)", strand = "*") #store p-values and genomic ranges in Gvizobject
-
-
-
-#######################
 
 #Set active Chromosome and then withdraw p values
 chromosome(d) <- 'Hmel218002o' 
@@ -67,7 +58,7 @@ p_raw_d3_Hmel218003o<-values(d3)
 
 #Safe ranged
 write.table(d@range,"d.txt")
-#Red in ranges and change all factor columns to character columns.
+#Read in ranges and change all factor columns to character columns.
 d_seq<-read.table("d.txt",header=T)
 for(i in 1:length(d_seq[1,])){
   if(is.factor(d_seq[,i])){
@@ -92,38 +83,29 @@ seqnames_d3<-d3_seq$seqnames
 mean_pos_d<-(d_seq$start+d_seq$end)/2
 mean_pos_d3<-(d3_seq$start+d3_seq$end)/2      
 
-
-#Extract those positions that belong to the two chromosomes you're interested in.
+#Extract those positions that belong to the two scaffolds you're interested in.
 mean_pos_d_Hmel218002o<-mean_pos_d[seqnames_d=="Hmel218002o"]
 mean_pos_d3_Hmel218002o<-mean_pos_d3[seqnames_d3=="Hmel218002o"]
-
 mean_pos_d_Hmel218003o<-mean_pos_d[seqnames_d=="Hmel218003o"]
 mean_pos_d3_Hmel218003o<-mean_pos_d3[seqnames_d3=="Hmel218003o"]
-
 
 #Fold change
 fold_d_Hmel218002o<-resGR$log2FoldChange[seqnames_d=="Hmel218002o"]
 fold_d3_Hmel218002o<-resGR3$log2FoldChange[seqnames_d3=="Hmel218002o"]
-
 fold_d_Hmel218003o<-resGR$log2FoldChange[seqnames_d=="Hmel218003o"]
 fold_d3_Hmel218003o<-resGR3$log2FoldChange[seqnames_d3=="Hmel218003o"]
-
 
 #Which positions are free of NA
 no_NA_d_Hmel218002o<-sapply(1:length(fold_d_Hmel218002o),function(x) sum(is.na(p_raw_d_Hmel218002o[x]),is.na(mean_pos_d_Hmel218002o[x]),is.na(fold_d_Hmel218002o[x])))
 no_NA_d3_Hmel218002o<-sapply(1:length(fold_d3_Hmel218002o),function(x) sum(is.na(p_raw_d3_Hmel218002o[x]),is.na(mean_pos_d3_Hmel218002o[x]),is.na(fold_d3_Hmel218002o[x])))
-
 no_NA_d_Hmel218003o<-sapply(1:length(fold_d_Hmel218003o),function(x) sum(is.na(p_raw_d_Hmel218003o[x]),is.na(mean_pos_d_Hmel218003o[x]),is.na(fold_d_Hmel218003o[x])))
 no_NA_d3_Hmel218003o<-sapply(1:length(fold_d3_Hmel218003o),function(x) sum(is.na(p_raw_d3_Hmel218003o[x]),is.na(mean_pos_d3_Hmel218003o[x]),is.na(fold_d3_Hmel218003o[x])))
-
 
 #Color vectors
 col_d_Hmel218002o_alt<-sapply((1:length(fold_d_Hmel218002o))[no_NA_d_Hmel218002o==0],function(x) c("black","dodgerblue","gold")[c(p_raw_d_Hmel218002o[x]<=1.3|(fold_d_Hmel218002o[x]>=(-1)&fold_d_Hmel218002o[x]<=1),p_raw_d_Hmel218002o[x]>1.3&fold_d_Hmel218002o[x]<(-1),p_raw_d_Hmel218002o[x]>1.3&fold_d_Hmel218002o[x]>1)])
 col_d3_Hmel218002o_alt<-sapply((1:length(fold_d3_Hmel218002o))[no_NA_d3_Hmel218002o==0],function(x) c("black","dodgerblue","gold")[c(p_raw_d3_Hmel218002o[x]<=1.3|(fold_d3_Hmel218002o[x]>=(-1)&fold_d3_Hmel218002o[x]<=1),p_raw_d3_Hmel218002o[x]>1.3&fold_d3_Hmel218002o[x]<(-1),p_raw_d3_Hmel218002o[x]>1.3&fold_d3_Hmel218002o[x]>1)])
-
 col_d_Hmel218003o_alt<-sapply((1:length(fold_d_Hmel218003o))[no_NA_d_Hmel218003o==0],function(x) c("black","dodgerblue","gold")[c(p_raw_d_Hmel218003o[x]<=1.3|(fold_d_Hmel218003o[x]>=(-1)&fold_d_Hmel218003o[x]<=1),p_raw_d_Hmel218003o[x]>1.3&fold_d_Hmel218003o[x]<(-1),p_raw_d_Hmel218003o[x]>1.3&fold_d_Hmel218003o[x]>1)])
 col_d3_Hmel218003o_alt<-sapply((1:length(fold_d3_Hmel218003o))[no_NA_d3_Hmel218003o==0],function(x) c("black","dodgerblue","gold")[c(p_raw_d3_Hmel218003o[x]<=1.3|(fold_d3_Hmel218003o[x]>=(-1)&fold_d3_Hmel218003o[x]<=1),p_raw_d3_Hmel218003o[x]>1.3&fold_d3_Hmel218003o[x]<(-1),p_raw_d3_Hmel218003o[x]>1.3&fold_d3_Hmel218003o[x]>1)])
-
 
 #Set xlimits
 xlims<-c(0,1200000)
@@ -138,23 +120,18 @@ ylims<-c(min(fold_d_Hmel218002o[no_NA_d_Hmel218002o==0],
          ,max(fold_d_Hmel218002o[no_NA_d_Hmel218002o==0],
               fold_d3_Hmel218002o[no_NA_d3_Hmel218002o==0]))
 
-
-
-
-############## SCAFFOLD 2
-pdf("Hmel218002o_ALL.pdf")
+                               
+### SCAFFOLD 2
+pdf("Hmel218002o_ALL.pdf")                              
 plotTracks(list(d,d3), chromosome = "Hmel218002o", from = 0,to = 1200000, ylim=c(0,35))
-
-#### FIRST PLOT (First chromosome)
-#Layut to get multiple plots
+#Layout to get multiple plots
 layout(matrix(1:2,ncol=1))
 #spacing around one plot
 par(mar=c(2,5,0,0))
 #spacing around all three plots
 par(oma=c(0,0,1,0.7))
 
-
-#ADULTS #to MELPOMENE
+#Mapping to mepomene
 plot(1,1,
      xlim=c(xlims[1]-0.01*(abs(xlims[1]-xlims[2])),1200000),
      ylim=c(ylims[1]-0.02*(abs(ylims[1]-ylims[2])),
@@ -172,8 +149,7 @@ points(mean_pos_d_Hmel218002o[no_NA_d_Hmel218002o==0][col_d_Hmel218002o_alt!="bl
 axis(2,line=0.2,las=1,lwd=1.5,font=2)
 axis(2,line=0.2,lwd=1.5,at=ylims,tck=0,labels=F)
 
-
-#ADULTS #to CYDNO
+#Mapping to cydno
 plot(1,1,
      xlim=c(xlims[1]-0.01*(abs(xlims[1]-xlims[2])),1200000),
      ylim=c(ylims[1]-0.02*(abs(ylims[1]-ylims[2])),
@@ -187,28 +163,19 @@ points(mean_pos_d3_Hmel218002o[no_NA_d3_Hmel218002o==0][col_d3_Hmel218002o_alt!=
 axis(2,line=0.2,las=1,lwd=1.5,font=2)
 axis(2,line=0.2,lwd=1.5,at=ylims,tck=0,labels=F)
 
-
 dev.off()
 
 
-
-
-
-#########################GRAPH SCAFFOLD 3
-
+### SCAFFOLD 3
 pdf("Hmel218003o_ALL.pdf")
 plotTracks(list(d,d3), chromosome = "Hmel218003o", from = 0,to = 1200000, ylim=c(0,35))
-
-#### FIRST PLOT (First chromosome)
-#Layut to get multiple plots
 layout(matrix(1:2,ncol=1))
 #spacing around one plot
 par(mar=c(2,5,0,0))
 #spacing around all three plots
 par(oma=c(0,0,1,0.7))
 
-
-#MELPOMENE
+#Mapping to mepomene
 plot(1,1,
      xlim=c(xlims[1]-0.01*(abs(xlims[1]-xlims[2])),1200000),
      ylim=c(ylims[1]-0.02*(abs(ylims[1]-ylims[2])),
@@ -225,8 +192,7 @@ points(mean_pos_d_Hmel218003o[no_NA_d_Hmel218003o==0][col_d_Hmel218003o_alt!="bl
 axis(2,line=0.2,las=1,lwd=1.5,font=2)
 axis(2,line=0.2,lwd=1.5,at=ylims,tck=0,labels=F)
 
-
-##CYDNO
+#Mapping to cydno
 plot(1,1,
      xlim=c(xlims[1]-0.01*(abs(xlims[1]-xlims[2])),1200000),
      ylim=c(ylims[1]-0.02*(abs(ylims[1]-ylims[2])),
@@ -240,15 +206,10 @@ points(mean_pos_d3_Hmel218003o[no_NA_d3_Hmel218003o==0][col_d3_Hmel218003o_alt!=
 axis(2,line=0.2,las=1,lwd=1.5,font=2)
 axis(2,line=0.2,lwd=1.5,at=ylims,tck=0,labels=F)
 
-
 dev.off()
 
 
-
-
-
-
-######see which GENES diff epressed in both comparisons
+######see which GENES are considered differentially expressed in both comparisons
 ddsSex <- DESeqDataSetFromMatrix(countData=allAdult, colData=coldata, design=~sex+conditionAdult)
 dds <- DESeq(ddsSex)
 res <- results(dds)
@@ -260,7 +221,6 @@ upmel<-diffAdult_to_mel[diffAdult_to_mel$log2FoldChange >1,]
 upcydno<-diffAdult_to_mel[diffAdult_to_mel$log2FoldChange< (-1),]
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")   
-
 #
 ddsSex2 <- DESeqDataSetFromMatrix(countData=allAdult2, colData=coldata2, design=~sex+conditionAdult2)
 dds2 <- DESeq(ddsSex2)
@@ -274,26 +234,22 @@ upcydno2<-diffAdult_to_cyd[diffAdult_to_cyd$log2FoldChange< (-1),]
 all2<-rbind(upmel2,upcydno2)
 all2<- merge(all2,annotation_cyd,by="gene_id") 
 
-
-#genes diff expressed until optix #CHR18
+#genes diff expressed until optix location #CHR18
 #to MP
 only18_1<-all[all$scaffold == "Hmel218001o",] #
 only18_2<-all[all$scaffold == "Hmel218002o",] #
 only18_3<-all[all$scaffold =="Hmel218003o",] #   
 untiloptix<-only18_3[only18_3$end <800000,] #
-
 #to CP
 only18_1_toCP<-all2[all2$scaffold == "Hmel218001o",] #
 only18_2_toCP<-all2[all2$scaffold == "Hmel218002o",] #
 only18_3_toCP<-all2[all2$scaffold =="Hmel218003o",] #   
 untiloptix_toCP<-only18_3_toCP[only18_3_toCP$end <800000,] # 
 
-
 #genes diff expressed in QTL candidate regions ("QTL 1.5 lod score")
 #to MP
 only18_3<-all[all$scaffold =="Hmel218003o",] #   
 untilqtl<-only18_3[only18_3$end <2393341,] # 
-
 #to CP
 only18_3_toCP<-all2[all2$scaffold =="Hmel218003o",] #   
 untilqtl_toCP<-only18_3_toCP[only18_3_toCP$end <2393341,] #   
