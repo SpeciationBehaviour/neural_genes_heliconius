@@ -160,4 +160,4 @@ for i in $individuals
   mv allele_counts.csv $i.allele_counts.csv    
  done
 
-#download files and go to next R script
+#download files and go to next R script #14b_allele_specific_differential_expression.R
