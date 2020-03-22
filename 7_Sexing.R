@@ -1,6 +1,6 @@
-setwd("/Users/matteo/Desktop/")
+#this script is for estimating HETEROZIGOSITY on the Z chromosome, in order to sex (pupal) samples
 
-######################HETEROZIGOSITY on the Z
+setwd("/Users/matteo/Desktop/")
 
 #source("https://bioconductor.org/biocLite.R")
 #biocLite("snpStats")
@@ -8,11 +8,11 @@ setwd("/Users/matteo/Desktop/")
 library(VariantAnnotation)
 library(snpStats)
 
+###### EXAMPLE WITH ADULT SAMPLES 
 
-###################################ADULTS  
-###CONVERT FILES in tabix/PROCESSING OF FILES (on Cluster):
+#CONVERT FILES with tabix/prodocue indexes in order to process them (on Cluster):
 #module load samtools/1.4.1
-#1)
+#1) bgzip files
 #cd /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/
 #individuals=$(ls -d *)    
 #for i in $individuals                 
@@ -20,7 +20,7 @@ library(snpStats)
   #cd /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/$i/
   #bgzip -c $i.passed.output.vcf > $i.passed.output.vcf.gz 
  #done
-#2)
+#2) tabix
 #cd /data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/
 #individuals=$(ls -d *)    
 #for i in $individuals                 
@@ -29,12 +29,10 @@ library(snpStats)
   #tabix -p vcf $i.passed.output.vcf.gz  
 #done
 
-
-#DOWNLOAD
+#DOWNLOAD FILES ON LAPTOP
 #scp -r #LINK:/data/home/wolfproj/wolfproj-06/7_GATK/Adults/MP/*/*passed.output.vcf.gz.tbi /Users/matteo/Desktop/TBIs/Adults/MP/
-#...
 
-
+#READ FILES
 tab45 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/MP/45.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/MP/45.passed.output.vcf.gz.tbi")
 tab47 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/MP/47.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/MP/47.passed.output.vcf.gz.tbi")
 tab53 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/MP/53.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/MP/53.passed.output.vcf.gz.tbi")
@@ -60,7 +58,8 @@ tab84 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/CP/84.passed.output.vcf.gz"
 tab98 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/CP/98.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/CP/98.passed.output.vcf.gz.tbi")
 tab99 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/CP/99.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/CP/99.passed.output.vcf.gz.tbi")
 
-gr <- GRanges(seqnames = "Hmel221001o:1-13359691:+")   #set Z chr as the range
+#set the Z chromosome as the range for estimating heterozigosity
+gr <- GRanges(seqnames = "Hmel221001o:1-13359691:+")   
 
 vcf45 <- readVcf(tab45, "Melpomene",param=gr)
 vcf47 <- readVcf(tab47, "Melpomene",param=gr)
@@ -87,7 +86,8 @@ vcf84 <- readVcf(tab84, "Melpomene",param=gr)
 vcf98 <- readVcf(tab98, "Melpomene",param=gr)
 vcf99 <- readVcf(tab99, "Melpomene",param=gr)
 
-snpmat45 <- genotypeToSnpMatrix(vcf45) #exlcude all but biallelic SNPs    
+#exlcude all but biallelic SNPs 
+snpmat45 <- genotypeToSnpMatrix(vcf45)    
 snpmat47 <- genotypeToSnpMatrix(vcf47)
 snpmat53 <- genotypeToSnpMatrix(vcf53)
 snpmat70 <- genotypeToSnpMatrix(vcf70)
@@ -112,7 +112,7 @@ snpmat84 <- genotypeToSnpMatrix(vcf84)
 snpmat98 <- genotypeToSnpMatrix(vcf98)
 snpmat99 <- genotypeToSnpMatrix(vcf99)
 
-#heterozigosity
+#estimate heterozigosity
 summary(snpmat45$genotypes)  #Heterozygosity #0.4872 #0.49     #45 M
 summary(snpmat47$genotypes)   #0.457 #0.46                   #47 M
 summary(snpmat53$genotypes)    #0.04281  #0.04               #53 F
@@ -140,9 +140,8 @@ summary(snpmat99$genotypes)    #0.2438  #0.24    #99 M
 
 
 
-#######F1
-#PROCESS FILES (transform to tabix) ON CLUSTER AS ABOVE #then copy on laptop
-
+####### Other example with F1 hybrids files
+#read files
 tab42 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/F1/42.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/F1/42.passed.output.vcf.gz.tbi")
 tab49 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/F1/49.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/F1/49.passed.output.vcf.gz.tbi")
 tab56 <- TabixFile("/Users/matteo/Desktop/GZs/Adults/F1/56.passed.output.vcf.gz","/Users/matteo/Desktop/TBIs/Adults/F1/56.passed.output.vcf.gz.tbi")
@@ -152,17 +151,14 @@ vcf42 <- readVcf(tab42, "Melpomene",param=gr)
 vcf49 <- readVcf(tab49, "Melpomene",param=gr)
 vcf56 <- readVcf(tab56, "Melpomene",param=gr)
 vcf69 <- readVcf(tab69, "Melpomene",param=gr)
-snpmat42 <- genotypeToSnpMatrix(vcf42)    
-#snpmat48 <- genotypeToSnpMatrix(vcf48)
+snpmat42 <- genotypeToSnpMatrix(vcf42)    #restrict to biallelic SNPs
 snpmat49 <- genotypeToSnpMatrix(vcf49)
 snpmat56 <- genotypeToSnpMatrix(vcf56)
 snpmat69 <- genotypeToSnpMatrix(vcf69)
-
+#estimate heterozigosity
 summary(snpmat42$genotypes)  #0.6378 #0.64    #42 M
 summary(snpmat49$genotypes)  #0.6358 #0.64    #49 M
 summary(snpmat56$genotypes)  #0.05236 #0.05     #56 F
 summary(snpmat69$genotypes)  #0.04294 #0.04    #69 F
-
-
 
 #and so for all other samples
