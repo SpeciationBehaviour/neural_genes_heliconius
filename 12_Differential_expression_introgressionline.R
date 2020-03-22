@@ -218,6 +218,7 @@ upmel<-diff156[diff156$log2FoldChange >1,] #
 upcydno<-diff156[diff156$log2FoldChange< (-1),] #
 all<-rbind(upmel,upcydno)
 all <- merge(all,annotation,by="gene_id")
+
 ###60 h APF     
 #### chr 15 introgressed: 161, 179, 192, 193, 197, 199, 209, 214
 #### chr 15 not introgressed: 152, 165, 187, 188, 198, 201, 212, 215, 224
