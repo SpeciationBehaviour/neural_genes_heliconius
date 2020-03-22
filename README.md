@@ -39,7 +39,7 @@ The repository includes:
 `8_Differential_expression.R`
 
 9. Use InterProScan and Panther to retrieve annotated functions associated with protein sequences of Hmel2.5: 
-`9_InterProScan/Panther.sh` 
+`9_InterProScan_Panther.sh` 
 
 11. a) Infer BC3 hybrids genome composition, using variants inferred from RNA-seq data:
 `11a_BC3hybrids_composition_inferring_snps_fromRNA.sh` 
