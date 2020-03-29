@@ -1,6 +1,6 @@
 ## Analysis details for “Visual mate preference evolution during butterfly speciation is linked to neural processing genes” ##
 
-Matteo Rossi, Timothy J. Thurman, Alexander E. Hausmann, Stephen H. Montgomery, Riccardo Papa, Chris D. Jiggins , W. Owen McMillan & Richard M. Merrill
+Matteo Rossi, Alexander E. Hausmann, Timothy J. Thurman,  Stephen H. Montgomery, Riccardo Papa, Chris D. Jiggins , W. Owen McMillan & Richard M. Merrill
 
 This repository documents analyses for the manuscript "Visual mate preference evolution during butterfly speciation is linked to neural processing genes". These bespoke scripts, written for either Unix or R, are presented for transparency only and will require editing to be applied to other datasets. 
 
