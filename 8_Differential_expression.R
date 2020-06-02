@@ -89,10 +89,10 @@ all <- merge(all,annotation,by="gene_id")
 #Now check at the level of the QTL on CHR 18
 only18_1<-all[all$scaffold == "Hmel218001o",] 
 only18_1<-only18_1[only18_1$start >8997,] 
-only18_2<-all[all$scaffold == "Hmel218002o",] 
+only18_2<-all[all$scaffold == "Hmel218002o",]  #9
 only18_3<-all[all$scaffold =="Hmel218003o",]   
 onlypeak<-only18_3[only18_3$end <275070,] #   
-onlylodscore<-only18_3[only18_3$end <2393341,] #
+onlylodscore<-only18_3[only18_3$end <2393341,] #11
 
 
 #Check which genes are differentially expressed when mapping to the H.cydno genome (above is with melpomene)
@@ -171,8 +171,7 @@ all_CP<- merge(allCP,annotation_cyd,by="gene_id") #921
 overlap_peak_scf2<-inner_join(only18_2,all_CP,by="gene_id") #
 overlap_lodscore<-inner_join(onlylodscore,all_CP,by="gene_id") #
 
-##### same for 60h APF...
- 
+
 
 ## See if the mapping genome introduces biases in differential expression inference (e.g. when mapping to the melpomene genome, more melpomene up-regulated genes? artifact of melpomene RNA reads that mapped better?)
 #FISHER-TEST
@@ -199,3 +198,88 @@ up_regulated <-
          dimnames = list(mel = c("up_mel", "up_cyd"),
                          cydn = c("up_mel", "up_cyd")))
 fisher.test(up_regulated) 
+
+
+
+###See if chromosome 18 is enriched for differentially expressed genes compared to other chromosome
+#Fisher's exact test. 
+#(1) The number of differentially expressed genes on chromosome 18, 
+#(2) the number of non-DE genes on chromosome 18 
+#(3) the number of DE genes not on chromosome other autosomes
+#(4) the number of non-DE genes not on other autosomes
+
+#Adults
+annotation<-read.table("chromo_gene_info.txt",header=TRUE)
+diffAdult<-read.table("Adults_DE_sexfactor_toMP.txt",header=TRUE)
+upmel<-diffAdult[diffAdult$log2FoldChange >1,]  
+upcydno<-diffAdult[diffAdult$log2FoldChange< (-1),] 
+all<-rbind(upmel,upcydno)
+all <- merge(all,annotation,by="gene_id")
+
+chr18_DE<-all[all$scaffold=="chr18",] #75
+chr18<-annotation[annotation$scaffold=="chr18",] #992
+chr18_notDE<-anti_join(chr18,chr18_DE,by="gene_id") #917
+
+otherautosomes_DE<-all[!(all$scaffold=="chr18") & !(all$scaffold=="chr21"),] #1199
+otherautosomes<-annotation[!(annotation$scaffold=="chr18") & !(annotation$scaffold=="chr21"),] #17719
+otherautosomes_notDE<-anti_join(otherautosomes,otherautosomes_DE,by="gene_id") #16520
+
+DE <-
+  matrix(c(75, 917, 1199, 16520),
+         nrow = 2,
+         dimnames = list(chr18 = c("up_18", "not_18"),
+                         autosomes = c("up_autosm", "not_autosm")))
+fisher.test(DE) #two sided
+#p-value = 0.3312
+
+
+#156h APF
+diff156<-read.table("156h_DE_sexfactor_toMP.txt",header=TRUE)
+upmel<-diff156[diff156$log2FoldChange >1,] #
+upcydno<-diff156[diff156$log2FoldChange< (-1),] #
+all<-rbind(upmel,upcydno)
+all <- merge(all,annotation,by="gene_id")
+
+chr18_DE<-all[all$scaffold=="chr18",] #61
+chr18_notDE<-anti_join(chr18,chr18_DE,by="gene_id") #931
+
+otherautosomes_DE<-all[!(all$scaffold=="chr18") & !(all$scaffold=="chr21"),] #1277
+otherautosomes_notDE<-anti_join(otherautosomes,otherautosomes_DE,by="gene_id") #16442
+
+DE <-
+  matrix(c(61, 931, 1277, 16442),
+         nrow = 2,
+         dimnames = list(chr18 = c("up_18", "not_18"),
+                         autosomes = c("up_autosm", "not_autosm")))
+fisher.test(DE) #two sided
+#p-value = 0.2288
+
+
+
+#60 h APF
+diff60<-read.table("60_DE_sexfactor_toMP.txt",header=TRUE)
+upmel<-diff60[diff60$log2FoldChange >1,]  
+upcydno<-diff60[diff60$log2FoldChange< (-1),] 
+all<-rbind(upmel,upcydno)
+all <- merge(all,annotation,by="gene_id")
+
+chr18_DE<-all[all$scaffold=="chr18",] #76
+chr18_notDE<-anti_join(chr18,chr18_DE,by="gene_id") #916
+
+otherautosomes_DE<-all[!(all$scaffold=="chr18") & !(all$scaffold=="chr21"),] #1262
+otherautosomes_notDE<-anti_join(otherautosomes,otherautosomes_DE,by="gene_id") #16457
+
+DE <-
+  matrix(c(76, 916, 1262, 16457),
+         nrow = 2,
+         dimnames = list(chr18 = c("up_18", "not_18"),
+                         autosomes = c("up_autosm", "not_autosm")))
+fisher.test(DE) #two sided
+#p-value = 0.5264
+
+
+#QTl on chr 18 , rest of the genes
+#all - QTl18 = rest
+#Adults: 1374 - 20 = 1354
+#156h: 1504 -14= 1490
+#60h: 1488 -15 = 1473
