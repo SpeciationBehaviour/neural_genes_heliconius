@@ -61,3 +61,47 @@ annotation <- annotation[order(annotation$gene_id),]
 GR<-makeGRangesFromDataFrame(annotation, seqnames.field=c("scaffold"))
 a <- AnnotationTrack(GR, name = "gene ranges")
 #can plot with "a" track (graph is informative only for small ranges..)
+
+
+#to make fd distribution graph
+admixture2<-read.csv("bar92.DP8MP4BIMAC2HET75.fourPopPol_melG_melW_cyd_num.w20m300s5.csv",header=TRUE) 
+admixture2 <- admixture2[admixture2$fd >= 0, ]
+distribution<-density(admixture2$fd, na.rm=TRUE)
+plot(distribution, lwd=2)
+#fd values
+#fd values > outmost fd value> within 20 kb upstream #+center of protein-coding part
+abline (v=0.0380,lty=2,col="black") #at 1038778
+abline (v=0.0032,lty=2,col="black") # optix  #HMEL001028 chr18 1058778 1059581
+abline (v=0.0017,lty=2,col="black") #at 1062581
+
+abline (v=0.0108,lty=2,col="goldenrod1") #314856
+abline (v=0.0126,lty=2,col="goldenrod1") #HMEL009992g4 chr18 334856 345144
+abline (v=0.1259,lty=2,col="goldenrod1") #365144
+
+abline (v=0.1955,lty=2,col="goldenrod1") # 453901
+abline (v=0.1331,lty=2,col="goldenrod1") #regucalcin2 #HMEL013552g1 chr18 473901 475137 +  HMEL034199g1 chr18 478430 479866
+abline (v=0.0515,lty=2,col="goldenrod1") #495137
+
+abline (v=0.2250,lty=2,col="dodgerblue3") #448445
+abline (v=0.1405,lty=2,col="dodgerblue3") #regucalcin1 #HMEL013551g4 chr18 468445 472652
+abline (v=0.0515,lty=2,col="dodgerblue3") #492652
+
+abline (v=0.1655,lty=2,col="dodgerblue3") #435434
+abline (v=0.2250,lty=2,col="dodgerblue3") #WD40 #HMEL013551g3 chr18 455434 459952
+abline (v=0.1171,lty=2,col="dodgerblue3") #479952
+
+abline (v=0.0185,lty=2,col="dodgerblue3") #136919
+abline (v=0.1530,lty=2,col="dodgerblue3") #cyst protease #HMEL009684g2 chr18 156919 162617
+abline (v=0.0267,lty=2,col="dodgerblue3")  #182617
+
+abline (v=0.0620,lty=2,col="dodgerblue3") # at 2700001 2720000
+abline (v=0.3184,lty=2,col="dodgerblue3") #MORN #chr18 2720420 2730566
+abline (v=0.1282,lty=2,col="dodgerblue3")#
+
+
+#quantiles
+admixture2<-admixture2[!is.na(admixture2$fd), ]
+quantile(admixture2$fd, probs = c(0.05)) #0.0306 
+quantile(admixture2$fd, probs = c(0.25)) #0.1488
+abline (v=0.0306,lty=2, col="black")
+abline (v=0.1488,lty=2, col="black")
