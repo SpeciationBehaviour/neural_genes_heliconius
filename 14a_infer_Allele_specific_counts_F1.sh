@@ -101,7 +101,7 @@ individuals=$(ls -d *)
 for i in $individuals                 
  do
   cd /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_allele_counts_withSNPclusters/$i
-  (echo '#!/bin/bash'; echo '#SBATCH -J ASE'; echo '#SBATCH -n 2'; echo "java -jar /data/home/wolfproj/wolfproj-06/7_GATK/GenomeAnalysisTK.jar -T ASEReadCounter -R /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa -I /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_bam_files/$i/unique.split.bam -sites /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_hetero_vcf_files_withSNPclusters/$i/0003.sort.vcf -U ALLOW_N_CIGAR_READS -minDepth 4 --minBaseQuality 2 -o /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_allele_counts_withSNPclusters/$i/allele_counts.csv") | sbatch
+  (echo '#!/bin/bash'; echo '#SBATCH -J ASE'; echo '#SBATCH -n 2'; echo "java -jar /data/home/wolfproj/wolfproj-06/7_GATK/GenomeAnalysisTK.jar -T ASEReadCounter -R /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa -I /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_bam_files/$i/unique.split.bam -sites /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_hetero_vcf_files_withSNPclusters/$i/0003.sort.vcf -U ALLOW_N_CIGAR_READS -drf DuplicateRead -minDepth 4 --minBaseQuality 2 -o /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_allele_counts_withSNPclusters/$i/allele_counts.csv") | sbatch
  done
 
 #rename files before dowloading
@@ -148,7 +148,7 @@ individuals=$(ls -d *)
 for i in $individuals                 
  do
   cd /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_allele_counts_withSNPclusters/toMP/$i
-  (echo '#!/bin/bash'; echo '#SBATCH -J ASE'; echo '#SBATCH -n 2'; echo "java -jar /data/home/wolfproj/wolfproj-06/7_GATK/GenomeAnalysisTK.jar -T ASEReadCounter -R /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa -I /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_bam_files/$i/unique.split.bam -sites /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_hetero_vcf_files_withSNPclusters/toMP/$i/0003.sort.vcf -U ALLOW_N_CIGAR_READS -minDepth 4 --minBaseQuality 2 -o /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_allele_counts_withSNPclusters/toMP/$i/allele_counts.csv") | sbatch
+  (echo '#!/bin/bash'; echo '#SBATCH -J ASE'; echo '#SBATCH -n 2'; echo "java -jar /data/home/wolfproj/wolfproj-06/7_GATK/GenomeAnalysisTK.jar -T ASEReadCounter -R /data/home/wolfproj/wolfproj-06/Genome_assemblies/Melpomene/Heliconius_melpomene_melpomene_Hmel2.5.scaffolds.fa -I /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_bam_files/$i/unique.split.bam -sites /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_hetero_vcf_files_withSNPclusters/toMP/$i/0003.sort.vcf -drf DuplicateRead -U ALLOW_N_CIGAR_READS -minDepth 4 --minBaseQuality 2 -o /data/home/wolfproj/wolfproj-06/13_allele_specific_expression/F1_allele_counts_withSNPclusters/toMP/$i/allele_counts.csv") | sbatch
  done
 
 #rename files before downloading
