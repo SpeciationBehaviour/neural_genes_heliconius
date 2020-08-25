@@ -192,6 +192,27 @@ What we can see from this output is:
 * B) Dropping `geno1` leads to a slightly bigger ELPD and SE as before (ELPD diff = 2.38 SE units). `geno1` is an important factor!
 
 
+Since `geno18` and `geno1` seem both relevant, we test for epistasis. We compare the previous model, `mod2_r_geno17`, which includes the two genotypes as additive fixed effects with a model including additionally an interaction term.
+```{r}
+mod2_r_geno17_interact <- suppressMessages(brm(decision ~ geno1*geno18 + (1|insectary_id), data = tern_pref_model_cydBC, 
+                                      family="categorical",chains=5, iter=6000, warmup=3000, refresh=0,silent = TRUE,seed=50))
+```
+
+Perform approximate leave-one-out (LOO) cross-validation for the model with interaction term.
+```{r}
+loo_2_r_geno17_interact<-loo(mod2_r_geno17_interact)
+```
+
+Compare loos between model with and model without interaction term
+```{r}
+loo_compare(list(loo_2_r_geno17_interact,loo_2_r_geno17))
+```
+
+What we can see from this output is:
+
+Including the interaction term creates a model with a worse fit. This suggests that there is no epistatic interactions between QTLs on chromosome 1 and 18.
+
+
 ## Retrieve conditional effects
 
 In all calls, we use `re_formula=NA` in order not to condition on the group-level effects.
